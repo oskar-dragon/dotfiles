@@ -67,6 +67,12 @@
         "source.organizeImports": true,
         "source.fixAll.eslint": true
       }
+    },
+    "TSX": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      }
     }
   }
 }
