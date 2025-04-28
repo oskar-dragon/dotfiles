@@ -7,7 +7,19 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
+  "assistant": {
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-3-7-sonnet-latest"
+    },
+    "version": "2"
+  },
+  // Editor Settings
   "icon_theme": "Material Icon Theme",
+  "hour_format": "hour24",
   "ui_font_size": 14,
   "buffer_font_size": 12,
   "telemetry": {
@@ -19,7 +31,11 @@
     "light": "One Light",
     "dark": "One Dark"
   },
-  "hour_format": "hour24",
+  "tabs": {
+    "file_icons": true,
+    "git_status": true,
+    "show_close_button": "always"
+  },
   "auto_install_extensions": {
     "html": true,
     "astro": true,
@@ -29,5 +45,28 @@
     "scss": true,
     "terraform": true,
     "typescript": true
+  },
+  "ensure_final_newline_on_save": true,
+  "format_on_save": "on",
+  "git": {
+    "inline_blame": {
+      "enabled": true,
+      "show_commit_summary": true,
+      "show_commit_author": true,
+      "show_commit_date": true
+    }
+  },
+  "languages": {
+    "Go": {
+      "code_actions_on_format": {
+        "source.organizeImports": true
+      }
+    },
+    "TypeScript": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      }
+    }
   }
 }
