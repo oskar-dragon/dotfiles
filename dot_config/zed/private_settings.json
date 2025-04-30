@@ -19,7 +19,10 @@
   },
   // Editor Settings
   "icon_theme": "Material Icon Theme",
+  "ui_font_family": "JetBrains Mono",
+  "buffer_font_family": "JetBrains Mono",
   "hour_format": "hour24",
+  "buffer_line_height": "standard",
   "ui_font_size": 14,
   "buffer_font_size": 12,
   "telemetry": {
