@@ -10,39 +10,7 @@
   "features": {
     "edit_prediction_provider": "zed"
   },
-  "agent": {
-    "profiles": {
-      "ask": {
-        "name": "Ask",
-        "tools": {
-          "contents": true,
-          "diagnostics": true,
-          "fetch": true,
-          "list_directory": true,
-          "now": true,
-          "find_path": true,
-          "read_file": true,
-          "open": true,
-          "grep": true,
-          "thinking": true,
-          "web_search": true
-        },
-        "enable_all_context_servers": false,
-        "context_servers": {
-          "mcp-server-context7": {
-            "tools": {
-              "get-library-docs": true,
-              "resolve-library-id": true
-            }
-          },
-          "mcp-server-sequential-thinking": {
-            "tools": {
-              "sequentialthinking": true
-            }
-          }
-        }
-      }
-    },
+  "assistant": {
     "default_profile": "ask",
     "default_model": {
       "provider": "zed.dev",
@@ -50,7 +18,6 @@
     },
     "version": "2"
   },
-
   // Editor Settings
   "icon_theme": "Material Icon Theme",
   "ui_font_family": "JetBrains Mono",
