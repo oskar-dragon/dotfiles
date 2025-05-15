@@ -5,6 +5,7 @@ This repository contains my personal dotfiles managed using [Chezmoi](https://ww
 ## Overview
 
 These dotfiles include configurations for:
+hello
 
 - Zsh shell configuration
 - Git configuration
