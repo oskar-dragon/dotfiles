@@ -1,4 +1,4 @@
-{{- $use_secrets := promptBoolOnce . "use_secrets" "Use secrets from Bitwarden? (true/false)" -}}
+{{- $use_secrets := promptBoolOnce . "use_secrets" "Use secrets from 1Password? (true/false)" -}}
 {{- $is_work_computer := promptBoolOnce . "is_work_computer" "Is this a work computer? (true/false)" -}}
 {{- $is_personal_computer := promptBoolOnce . "is_personal_computer" "Is this your personal computer? (true/false)" -}}
 {{- $email := promptStringOnce . "email" "Email address" -}}
