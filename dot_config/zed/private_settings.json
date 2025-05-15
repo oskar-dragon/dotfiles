@@ -11,35 +11,16 @@
     "edit_prediction_provider": "zed"
   },
   "agent": {
-    "profiles": {
-      "ask": {
-        "name": "Ask",
+    "context_servers": {
+      "mcp-server-context7": {
         "tools": {
-          "contents": true,
-          "diagnostics": true,
-          "fetch": true,
-          "list_directory": true,
-          "now": true,
-          "find_path": true,
-          "read_file": true,
-          "open": true,
-          "grep": true,
-          "thinking": true,
-          "web_search": true
-        },
-        "enable_all_context_servers": false,
-        "context_servers": {
-          "mcp-server-context7": {
-            "tools": {
-              "get-library-docs": true,
-              "resolve-library-id": true
-            }
-          },
-          "mcp-server-sequential-thinking": {
-            "tools": {
-              "sequentialthinking": true
-            }
-          }
+          "get-library-docs": true,
+          "resolve-library-id": true
+        }
+      },
+      "mcp-server-sequential-thinking": {
+        "tools": {
+          "sequentialthinking": true
         }
       }
     },
@@ -59,6 +40,7 @@
   "buffer_line_height": "standard",
   "ui_font_size": 14,
   "buffer_font_size": 12,
+  "agent_font_size": 14,
   "telemetry": {
     "diagnostics": false,
     "metrics": false
@@ -66,7 +48,7 @@
   "theme": {
     "mode": "system",
     "light": "One Light",
-    "dark": "One Dark"
+    "dark": "Cisco"
   },
   "tabs": {
     "file_icons": true,
@@ -100,6 +82,12 @@
       }
     },
     "TypeScript": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      }
+    },
+    "TSX": {
       "code_actions_on_format": {
         "source.organizeImports": true,
         "source.fixAll.eslint": true
