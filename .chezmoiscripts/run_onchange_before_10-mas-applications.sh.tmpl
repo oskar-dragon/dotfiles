@@ -1,0 +1,24 @@
+{{- if and (eq .chezmoi.os "darwin") (not .is_ci_workflow) -}}
+#!/usr/bin/env bash
+
+{{ template "shared_script_utils.bash" . }}
+
+apps=(
+    {{ range $package := .packages.mas.common.apps }}
+    "{{ $package }}"
+    {{ end }}
+)
+
+if [[ $(command -v mas) ]]; then
+    header "Installing Applications from mas"
+
+    for app in "${apps[@]}"; do
+        if mas list | awk '{print $1}' | grep -E "^${app}$" &>/dev/null; then
+            continue
+        fi
+        mas install ${app}
+    done
+fi
+_safeExit_
+
+{{- end }}

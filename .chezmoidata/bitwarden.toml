@@ -1,2 +1,0 @@
-[secrets]
-    gpg_signing_key = "{{ (bitwardenFields \"item\" \"GPG Signing Key GH\").signingkey.value }}"

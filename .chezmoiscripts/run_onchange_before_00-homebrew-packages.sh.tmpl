@@ -1,0 +1,111 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# This script installs Homebrew packages defined in packages.toml
+
+set -e  # Exit on error
+echo "===== Installing Homebrew Packages ====="
+
+# Set Homebrew options
+export HOMEBREW_NO_INSTALL_UPGRADE=TRUE
+export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+export HOMEBREW_NO_INSTALL_CLEANUP=1
+
+# Define arrays of formulae and casks to install
+formulae=(
+    {{ range $package := .packages.homebrew.common.formulae }}
+    "{{ $package }}"
+    {{ end }}
+
+    {{ if .personal_computer }}
+    {{ range $package := .packages.homebrew.personal_computer.formulae }}
+    "{{ $package }}"
+    {{ end }}
+    {{ end }}
+
+    {{ if .work_computer }}
+    {{ range $package := .packages.homebrew.work_computer.formulae }}
+    "{{ $package }}"
+    {{ end }}
+    {{ end }}
+)
+
+casks=(
+    {{ range $package := .packages.homebrew.common.casks }}
+    "{{ $package }}"
+    {{ end }}
+
+    {{ if .personal_computer }}
+    {{ range $package := .packages.homebrew.personal_computer.casks }}
+    "{{ $package }}"
+    {{ end }}
+    {{ end }}
+
+    {{ if .work_computer }}
+    {{ range $package := .packages.homebrew.work_computer.casks }}
+    "{{ $package }}"
+    {{ end }}
+    {{ end }}
+)
+
+# Update Homebrew
+echo "Updating Homebrew..."
+brew update
+
+echo "Adding taps..."
+for tap in "${taps[@]}"; do
+    if brew tap | grep -q "^${tap}$"; then
+        echo "Tap already added: $tap"
+    else
+        echo "Adding tap: $tap"
+        brew tap "$tap"
+    fi
+done
+
+
+# Get lists of currently installed packages
+echo "Checking currently installed packages..."
+currently_installed_formulae=$(brew list --formula -1)
+currently_installed_casks=$(brew list --cask -1)
+
+# Install formulae
+echo "Installing formulae..."
+for formula in "${formulae[@]}"; do
+    if [[ -z "$formula" ]]; then
+        continue  # Skip empty entries
+    fi
+
+    # Check if formula is already installed
+    if echo "$currently_installed_formulae" | grep -q "^${formula}$"; then
+        echo "Formula already installed: $formula"
+    else
+        echo "Installing formula: $formula"
+        brew install --formula "$formula" || echo "Failed to install $formula, continuing..."
+
+        # Special case for git-credential-manager
+        if [[ "$formula" == "git-credential-manager" ]]; then
+            git-credential-manager install
+        fi
+    fi
+done
+
+{{ if not .is_ci_workflow }}
+# Install casks
+echo "Installing casks..."
+for cask in "${casks[@]}"; do
+    if [[ -z "$cask" ]]; then
+        continue  # Skip empty entries
+    fi
+
+    # Check if cask is already installed
+    if echo "$currently_installed_casks" | grep -q "^${cask}$"; then
+        echo "Cask already installed: $cask"
+    else
+        echo "Installing cask: $cask"
+        brew install --cask "$cask" || echo "Failed to install $cask, continuing..."
+    fi
+done
+{{ end }}
+
+echo "===== Homebrew packages installation complete! ====="
+exit 0
+{{- end }}

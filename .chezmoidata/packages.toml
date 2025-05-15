@@ -47,13 +47,13 @@ packages = ["zsh"]
 # packages = ["vid-cleaner"]
 
 [packages.homebrew]
-to_remove = []
+to_remove = ["lingo-x"]
 [packages.homebrew.common]
+taps = ["oven-sh/bun"]
 casks = [
     "zed",                 # IDE
     "font-jetbrains-mono", # JetBrains Mono font
     "ghostty",             # Terminal emulator
-    "lingon-x",            # Launchd GUI
     "orbstack",            # Docker replacement
     "bruno",               # IDE for testing APis
     "beekeeper-studio",    # Database management tool
@@ -64,6 +64,7 @@ casks = [
     "spotify",             # Music player
     "notion-calendar",     # Calendar app
     "github",              # Github GUI
+    "todoist",             # Task management tool
 ]
 formulae = [
     "atuin",         # Better shell history
@@ -76,7 +77,6 @@ formulae = [
     "zoxide",        # A faster way to navigate your filesystem
     "zsh",           # Z shell
     "gh",            # GitHub CLI
-    "todoist",       # Task management tool
     "git-workspace", # Git workspace management tool
 
     # Typescript Tools
@@ -89,8 +89,8 @@ casks = [
 ]
 formulae = []
 [packages.homebrew.personal_computer]
+to_remove = ["bitwarden"]
 casks = [
-    "bitwarden",     # Credentials Manager (GUI)
     "tailscale",     # VPN for NAS
     "mullvadvpn",    # VPN
     "google-chrome", #Browser
@@ -101,26 +101,18 @@ casks = [
     "qbittorrent",   # Torrent client
     "raindropio",    # Bookmark manager
     # "roon",        # Music streaming service (Nas)
-    # Typescritp
-    "oven-sh/bun/bun", # Bun
+    "1password",     # Password Manager (GUI)
+    "1password-cli", # Password Manager (CLI)
 
 ]
-formulae = [
-    "bitwarden-cli", # Credentials Manager (CLI)
-]
+formulae = []
 
-# [packages.mas]
-# [packages.mas.common]
-# apps = []
-# [packages.mas.dev_computer]
-# apps = []
-# [packages.mas.homelab_member]
-# apps = []
-# [packages.mas.personal_computer]
-# apps = [
-#     "1091189122", # Bear
-#     "1136220934", # Infuse
-#     "1502839586", # Handmirror
-#     "1532597159", # MP3tag
-#     "696977615",  # Capo
-# ]
+[packages.mas]
+[packages.mas.common]
+apps = []
+[packages.mas.dev_computer]
+apps = []
+[packages.mas.homelab_member]
+apps = []
+[packages.mas.personal_computer]
+apps = []
