@@ -27,7 +27,7 @@ These dotfiles include configurations for:
 ## Prerequisites
 
 - [Chezmoi](https://www.chezmoi.io/install/)
-- For secrets management: [Bitwarden CLI](https://bitwarden.com/help/article/cli/) (optional)
+- For secrets management: 1Password
 - Git
 - macOS or Linux-based system
 - Bash or Zsh shell
