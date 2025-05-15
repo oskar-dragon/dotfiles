@@ -78,6 +78,7 @@ formulae = [
     "zsh",           # Z shell
     "gh",            # GitHub CLI
     "git-workspace", # Git workspace management tool
+    "duti",
 
     # Typescript Tools
     "nvm", # Node Version Manager
