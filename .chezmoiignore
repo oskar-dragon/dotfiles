@@ -1,0 +1,12 @@
+README.md
+LICENSe
+.git/
+.github/
+.gitignore
+*.swp
+DS_Store
+**/.DS_Store
+.config/zed/conversations
+.config/zed/conversations/**
+.config/zed/prompts
+.config/zed/prompts/**
