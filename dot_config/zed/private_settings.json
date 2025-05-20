@@ -1,97 +1,219 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the
-// command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "features": {
-    "edit_prediction_provider": "zed"
-  },
-  "agent": {
-    "context_servers": {
-      "mcp-server-context7": {
-        "tools": {
-          "get-library-docs": true,
-          "resolve-library-id": true
-        }
-      },
-      "mcp-server-sequential-thinking": {
-        "tools": {
-          "sequentialthinking": true
-        }
-      }
+    // ===============================================
+    // Core Editor Settings
+    // ===============================================
+    "ensure_final_newline_on_save": true,
+    "format_on_save": "on",
+    "hour_format": "hour24",
+    "trim_trailing_whitespace_on_save": true, // Remove trailing whitespace
+    "soft_wrap": "preferred_line_length", // Wrap at preferred line length
+    "preferred_line_length": 100, // Line length for wrapping
+    "sticky_scroll": {
+        // Keep function context visible
+        "enabled": true,
+        "max_lines": 3
     },
-    "default_profile": "ask",
-    "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-3-7-sonnet-latest"
-    },
-    "version": "2"
-  },
+    "cursor_blink": true,
+    "show_whitespaces": "none", // Options: "all", "selection", "none"
 
-  // Editor Settings
-  "icon_theme": "Material Icon Theme",
-  "ui_font_family": "JetBrains Mono",
-  "buffer_font_family": "JetBrains Mono",
-  "hour_format": "hour24",
-  "buffer_line_height": "standard",
-  "ui_font_size": 14,
-  "buffer_font_size": 12,
-  "agent_font_size": 14,
-  "telemetry": {
-    "diagnostics": false,
-    "metrics": false
-  },
-  "theme": {
-    "mode": "system",
-    "light": "One Light",
-    "dark": "Cisco"
-  },
-  "tabs": {
-    "file_icons": true,
-    "git_status": true,
-    "show_close_button": "always"
-  },
-  "auto_install_extensions": {
-    "html": true,
-    "astro": true,
-    "sql": true,
-    "material-icon-theme": true,
-    "dockerfile": true,
-    "scss": true,
-    "terraform": true,
-    "typescript": true
-  },
-  "ensure_final_newline_on_save": true,
-  "format_on_save": "on",
-  "git": {
-    "inline_blame": {
-      "enabled": true,
-      "show_commit_summary": true,
-      "show_commit_author": true,
-      "show_commit_date": true
-    }
-  },
-  "languages": {
-    "Go": {
-      "code_actions_on_format": {
-        "source.organizeImports": true
-      }
+    // ===============================================
+    // User Interface
+    // ===============================================
+    "theme": {
+        "mode": "system",
+        "light": "One Light",
+        "dark": "One Dark"
     },
-    "TypeScript": {
-      "code_actions_on_format": {
-        "source.organizeImports": true,
-        "source.fixAll.eslint": true
-      }
+    "icon_theme": "Material Icon Theme",
+
+    // Typography
+    "ui_font_family": "JetBrains Mono",
+    "ui_font_size": 14,
+    "buffer_font_family": "JetBrains Mono",
+    "buffer_font_size": 12,
+    "buffer_line_height": "standard",
+    "agent_font_size": 14,
+
+    // Tabs
+    "tabs": {
+        "file_icons": true,
+        "git_status": true,
+        "show_close_button": "always"
     },
-    "TSX": {
-      "code_actions_on_format": {
-        "source.organizeImports": true,
-        "source.fixAll.eslint": true
-      }
+
+    // Editor Appearance
+    "editor": {
+        "show_line_numbers": true, // Show line numbers
+        "show_breadcrumbs": true, // Show breadcrumb navigation
+        "minimap": {
+            // Code overview minimap
+            "enabled": true,
+            "show_selection": true
+        },
+        "status_bar": {
+            "show_encoding": true,
+            "show_language": true,
+            "show_line_ending": true,
+            "show_position": true
+        }
+    },
+
+    // ===============================================
+    // AI Features
+    // ===============================================
+    "features": {
+        "edit_prediction_provider": "zed"
+    },
+    "agent": {
+        "context_servers": {
+            "mcp-server-context7": {
+                "tools": {
+                    "get-library-docs": true,
+                    "resolve-library-id": true
+                }
+            },
+            "mcp-server-sequential-thinking": {
+                "tools": {
+                    "sequentialthinking": true
+                }
+            }
+        },
+        "default_profile": "ask",
+        "default_model": {
+            "provider": "zed.dev",
+            "model": "claude-3-7-sonnet-latest"
+        },
+        "version": "2"
+    },
+
+    // ===============================================
+    // Extensions & Tools
+    // ===============================================
+    "auto_install_extensions": {
+        "html": true,
+        "astro": true,
+        "sql": true,
+        "material-icon-theme": true,
+        "dockerfile": true,
+        "scss": true,
+        "terraform": true,
+        "typescript": true,
+        "tailwindcss": true, // Added for Tailwind support
+        "prettier": true, // Consistent formatting
+        "eslint": true, // JavaScript/TypeScript linting
+        "go": true, // Go language support
+        "markdown": true, // Markdown support
+        "json": true // JSON support
+    },
+
+    // ===============================================
+    // Version Control
+    // ===============================================
+    "git": {
+        "inline_blame": {
+            "enabled": true,
+            "show_commit_summary": true,
+            "show_commit_author": true,
+            "show_commit_date": true
+        },
+        "diff_decorations": {
+            // Show git changes in gutter
+            "enabled": true
+        },
+        "gutter_blame": true, // Show blame in gutter
+        "fetch_interval": 300 // Fetch interval in seconds
+    },
+
+    // ===============================================
+    // File Management
+    // ===============================================
+    "file_finder": {
+        "exclude": [
+            // Files to exclude from search
+            "node_modules",
+            "dist",
+            "build",
+            ".git",
+            "coverage"
+        ]
+    },
+    "search": {
+        "case_sensitive": false, // Case-sensitivity in search
+        "wrap_around": true // Wrap search around to beginning
+    },
+
+    // ===============================================
+    // Language-Specific Settings
+    // ===============================================
+    // ===============================================
+    // Language-Specific Settings
+    // ===============================================
+    "languages": {
+        "Go": {
+            "code_actions_on_format": {
+                "source.organizeImports": true
+            },
+            "formatter": "gofmt", // Use gofmt formatter
+            "tab_size": 4 // Go standard is 4 spaces
+        },
+        "TypeScript": {
+            "code_actions_on_format": {
+                "source.organizeImports": true,
+                "source.fixAll.eslint": true
+            },
+            "formatter": "prettier", // Use prettier for TS
+            "tab_size": 2 // Common for TS projects
+        },
+        "TSX": {
+            "code_actions_on_format": {
+                "source.organizeImports": true,
+                "source.fixAll.eslint": true
+            },
+            "formatter": "prettier", // Use prettier for TSX
+            "tab_size": 2 // Common for React projects
+        },
+        "JavaScript": {
+            "formatter": "prettier",
+            "tab_size": 2
+        },
+        "JSX": {
+            "formatter": "prettier",
+            "tab_size": 2
+        },
+        "CSS": {
+            "formatter": "prettier",
+            "tab_size": 2
+        },
+        "HTML": {
+            "formatter": "prettier",
+            "tab_size": 2
+        },
+        "Markdown": {
+            "soft_wrap": "preferred_line_length",
+            "preferred_line_length": 80
+        }
+    },
+
+    // ===============================================
+    // Privacy & Telemetry
+    // ===============================================
+    "telemetry": {
+        "diagnostics": false,
+        "metrics": false
+    },
+
+    // ===============================================
+    // Collaboration & Productivity
+    // ===============================================
+    "copilot": {
+        "enabled": true // If you use GitHub Copilot
+    },
+
+    "autosave": "on_focus_change",
+    "restore_on_startup": "last_session",
+
+    "terminal": {
+        "font_family": "JetBrains Mono", // Terminal font
+        "font_size": 12 // Terminal font size
     }
-  }
 }
