@@ -81,6 +81,7 @@ formulae = [
     "duti",
     "ripgrep",
     "zsh-autosuggestions",
+    "zsh-autocomplete",
 
     # Typescript Tools
     "nvm", # Node Version Manager
