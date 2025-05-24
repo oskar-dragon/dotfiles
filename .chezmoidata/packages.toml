@@ -79,6 +79,7 @@ formulae = [
     "gh",            # GitHub CLI
     "git-workspace", # Git workspace management tool
     "duti",
+    "ripgrep",
 
     # Typescript Tools
     "nvm", # Node Version Manager
