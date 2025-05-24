@@ -67,19 +67,20 @@ casks = [
     "todoist",             # Task management tool
 ]
 formulae = [
-    "atuin",         # Better shell history
-    "chezmoi",       # Dotfile manager
-    "fzf",           # Fuzzy finder
-    "git",           # Git version control system
-    "openssl",       # SSL/TLS cryptography library
-    "rip2",          # A safer, rust-based rm
-    "tree",          # Display directories as trees (with optional color/HTML output)
-    "zoxide",        # A faster way to navigate your filesystem
-    "zsh",           # Z shell
-    "gh",            # GitHub CLI
-    "git-workspace", # Git workspace management tool
+    "atuin",               # Better shell history
+    "chezmoi",             # Dotfile manager
+    "fzf",                 # Fuzzy finder
+    "git",                 # Git version control system
+    "openssl",             # SSL/TLS cryptography library
+    "rip2",                # A safer, rust-based rm
+    "tree",                # Display directories as trees (with optional color/HTML output)
+    "zoxide",              # A faster way to navigate your filesystem
+    "zsh",                 # Z shell
+    "gh",                  # GitHub CLI
+    "git-workspace",       # Git workspace management tool
     "duti",
     "ripgrep",
+    "zsh-autosuggestions",
 
     # Typescript Tools
     "nvm", # Node Version Manager
