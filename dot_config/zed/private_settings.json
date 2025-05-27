@@ -37,20 +37,31 @@
   "features": {
     "edit_prediction_provider": "zed"
   },
-  "agent": {
-    "context_servers": {
-      "mcp-server-context7": {
-        "tools": {
-          "get-library-docs": true,
-          "resolve-library-id": true
-        }
-      },
-      "mcp-server-sequential-thinking": {
-        "tools": {
-          "sequentialthinking": true
-        }
+  "context_servers": {
+    "mcp-server-context7": {
+      "tools": {
+        "get-library-docs": true,
+        "resolve-library-id": true
       }
     },
+    "mcp-server-sequential-thinking": {
+      "tools": {
+        "sequentialthinking": true
+      }
+    },
+    "browser-tools-context-server": {
+      "settings": {
+        "port": 3000,
+        "host": "127.0.0.1"
+      }
+    }
+  },
+  "agent": {
+    "thread_summary_model": {
+      "provider": "zed.dev",
+      "model": "claude-4-sonnet-latest"
+    },
+
     "default_profile": "ask",
     "default_model": {
       "provider": "zed.dev",
@@ -122,15 +133,21 @@
         "source.organizeImports": true
       }
     },
+    "JavaScript": {
+      "code_actions_on_format": {
+        "source.organizeImports": false,
+        "source.fixAll.eslint": true
+      }
+    },
     "TypeScript": {
       "code_actions_on_format": {
-        "source.organizeImports": true,
+        "source.organizeImports": false,
         "source.fixAll.eslint": true
       }
     },
     "TSX": {
       "code_actions_on_format": {
-        "source.organizeImports": true,
+        "source.organizeImports": false,
         "source.fixAll.eslint": true
       }
     }
