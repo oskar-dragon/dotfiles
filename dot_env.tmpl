@@ -1,0 +1,27 @@
+{{- if .use_secrets -}}
+# Environment variables with secrets from 1Password
+# Only created when use_secrets is true
+
+# Uncomment and configure these with your actual 1Password references:
+
+# OpenAI API Key
+# export OPENAI_API_KEY="{{ onepassword "op://Private/OpenAI API Key/credential" }}"
+
+# Anthropic API Key  
+# export ANTHROPIC_API_KEY="{{ onepassword "op://Private/Anthropic API Key/credential" }}"
+
+# GitHub Personal Access Token
+# export GITHUB_TOKEN="{{ onepassword "op://Private/GitHub Personal Access Token/credential" }}"
+
+# AWS Credentials
+# export AWS_ACCESS_KEY_ID="{{ onepassword "op://Private/AWS Credentials/username" }}"
+# export AWS_SECRET_ACCESS_KEY="{{ onepassword "op://Private/AWS Credentials/password" }}"
+
+# Docker Hub Credentials
+# export DOCKER_USERNAME="{{ onepassword "op://Private/Docker Hub/username" }}"
+# export DOCKER_PASSWORD="{{ onepassword "op://Private/Docker Hub/password" }}"
+
+# NPM Token
+# export NPM_TOKEN="{{ onepassword "op://Private/NPM Token/credential" }}"
+
+{{- end }}

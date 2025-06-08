@@ -1,0 +1,4 @@
+{{- if .use_secrets -}}
+# NPM configuration with 1Password token
+//registry.npmjs.org/:_authToken={{ onepassword .secrets.npm_token | default "your-npm-token-here" }}
+{{- end }}

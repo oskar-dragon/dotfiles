@@ -1,3 +1,7 @@
 [edit]
-command = "code"
+command = "zed"
 args = ["--wait"]
+
+[onepassword]
+command = "op"
+args = ["read", "--no-newline"]
