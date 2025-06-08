@@ -5,16 +5,23 @@
 set -e  # Exit on error
 echo "===== Setting up Node.js LTS with NVM ====="
 
-# Check if NVM is installed via Homebrew
-if ! command -v nvm &> /dev/null; then
-    echo "NVM not found. Please ensure it's installed via Homebrew first."
+# Source NVM to make it available in this script
+export NVM_DIR="$HOME/.nvm"
+
+# Check if NVM is installed via Homebrew and source it
+if [ -s "/opt/homebrew/opt/nvm/nvm.sh" ]; then
+    \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+    [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+else
+    echo "NVM not found at /opt/homebrew/opt/nvm/nvm.sh. Please ensure it's installed via Homebrew first."
     exit 1
 fi
 
-# Source NVM to make it available in this script
-export NVM_DIR="$HOME/.nvm"
-[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
-[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+# Verify NVM is now available
+if ! command -v nvm &> /dev/null; then
+    echo "NVM failed to load properly."
+    exit 1
+fi
 
 # Install Node.js LTS if not already installed
 echo "Checking for Node.js LTS..."

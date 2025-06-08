@@ -47,6 +47,12 @@ casks=(
     {{ end }}
 )
 
+taps=(
+    {{ range $tap := .packages.homebrew.common.taps }}
+    "{{ $tap }}"
+    {{ end }}
+)
+
 # Update Homebrew
 echo "Updating Homebrew..."
 brew update
@@ -64,11 +70,11 @@ done
 
 # Get lists of currently installed packages
 echo "Checking currently installed packages..."
-currently_installed_formulae=$(brew list --formula -1)
-currently_installed_casks=$(brew list --cask -1)
+currently_installed_formulae=$(brew list --formula -1 2>/dev/null || echo "")
+currently_installed_casks=$(brew list --cask -1 2>/dev/null || echo "")
 
-# Install formulae
-echo "Installing formulae..."
+# Filter out already installed formulae
+formulae_to_install=()
 for formula in "${formulae[@]}"; do
     if [[ -z "$formula" ]]; then
         continue  # Skip empty entries
@@ -78,6 +84,14 @@ for formula in "${formulae[@]}"; do
     if echo "$currently_installed_formulae" | grep -q "^${formula}$"; then
         echo "Formula already installed: $formula"
     else
+        formulae_to_install+=("$formula")
+    fi
+done
+
+# Install only missing formulae
+if [[ ${#formulae_to_install[@]} -gt 0 ]]; then
+    echo "Installing ${#formulae_to_install[@]} missing formulae..."
+    for formula in "${formulae_to_install[@]}"; do
         echo "Installing formula: $formula"
         brew install --formula "$formula" || echo "Failed to install $formula, continuing..."
 
@@ -85,25 +99,42 @@ for formula in "${formulae[@]}"; do
         if [[ "$formula" == "git-credential-manager" ]]; then
             git-credential-manager install
         fi
-    fi
-done
+    done
+else
+    echo "All formulae are already installed."
+fi
 
 {{ if not .is_ci_workflow }}
-# Install casks
-echo "Installing casks..."
+# Filter out already installed casks
+casks_to_install=()
 for cask in "${casks[@]}"; do
     if [[ -z "$cask" ]]; then
         continue  # Skip empty entries
     fi
 
-    # Check if cask is already installed
+    # Check if cask is already installed (exact match)
     if echo "$currently_installed_casks" | grep -q "^${cask}$"; then
         echo "Cask already installed: $cask"
     else
-        echo "Installing cask: $cask"
-        brew install --cask "$cask" || echo "Failed to install $cask, continuing..."
+        # Double-check with brew info to handle name variations
+        if brew info --cask "$cask" 2>/dev/null | grep -q "Installed"; then
+            echo "Cask already installed (verified): $cask"
+        else
+            casks_to_install+=("$cask")
+        fi
     fi
 done
+
+# Install only missing casks
+if [[ ${#casks_to_install[@]} -gt 0 ]]; then
+    echo "Installing ${#casks_to_install[@]} missing casks..."
+    for cask in "${casks_to_install[@]}"; do
+        echo "Installing cask: $cask"
+        brew install --cask "$cask" || echo "Failed to install $cask, continuing..."
+    done
+else
+    echo "All casks are already installed."
+fi
 {{ end }}
 
 echo "===== Homebrew packages installation complete! ====="

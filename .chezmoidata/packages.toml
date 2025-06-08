@@ -94,10 +94,10 @@ casks = [
 ]
 formulae = []
 [packages.homebrew.personal_computer]
-to_remove = ["bitwarden"]
+to_remove = ["bitwarden", "mullvadvpn"]
 casks = [
     "tailscale",     # VPN for NAS
-    "mullvadvpn",    # VPN
+    "mullvad-vpn",   # VPN
     "google-chrome", #Browser
     "iina",          # Video Pleayer
     "kap",           # Screen recorder
