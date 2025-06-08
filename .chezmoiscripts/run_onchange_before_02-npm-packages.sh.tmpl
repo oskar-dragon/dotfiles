@@ -1,0 +1,72 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# This script installs npm global packages using bun
+
+set -e  # Exit on error
+echo "===== Installing npm Global Packages with Bun ====="
+
+# Check if bun is installed
+if ! command -v bun &> /dev/null; then
+    echo "Bun not found. Please ensure it's installed via Homebrew first."
+    exit 1
+fi
+
+# Source NVM to ensure Node.js is available
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+# Use LTS Node.js
+if command -v nvm &> /dev/null; then
+    nvm use --lts
+fi
+
+# Define arrays of packages to install
+packages=(
+    {{ range $package := .packages.npm.common.packages }}
+    "{{ $package }}"
+    {{ end }}
+
+    {{ if .personal_computer }}
+    {{ range $package := .packages.npm.personal_computer.packages }}
+    "{{ $package }}"
+    {{ end }}
+    {{ end }}
+
+    {{ if .work_computer }}
+    {{ range $package := .packages.npm.work_computer.packages }}
+    "{{ $package }}"
+    {{ end }}
+    {{ end }}
+)
+
+# Get list of currently installed global packages
+echo "Checking currently installed global packages..."
+currently_installed=$(bun pm ls --global 2>/dev/null | grep -E '^[a-zA-Z@]' | awk '{print $1}' | sort || echo "")
+
+# Install packages
+echo "Installing global packages..."
+for package in "${packages[@]}"; do
+    if [[ -z "$package" ]]; then
+        continue  # Skip empty entries
+    fi
+
+    # Extract package name (handle scoped packages like @anthropic-ai/claude-code)
+    package_name="$package"
+    if [[ "$package" == *"@"* && "$package" != "@"* ]]; then
+        # Handle packages with version specifiers
+        package_name=$(echo "$package" | cut -d'@' -f1)
+    fi
+
+    # Check if package is already installed
+    if echo "$currently_installed" | grep -q "^${package_name}"; then
+        echo "Package already installed: $package_name"
+    else
+        echo "Installing package: $package"
+        bun install --global "$package" || echo "Failed to install $package, continuing..."
+    fi
+done
+
+echo "===== npm global packages installation complete! ====="
+exit 0
+{{- end }}

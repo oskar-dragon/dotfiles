@@ -1,0 +1,40 @@
+{{- if eq .chezmoi.os "darwin" -}}
+#!/bin/bash
+# This script installs Node.js LTS using NVM
+
+set -e  # Exit on error
+echo "===== Setting up Node.js LTS with NVM ====="
+
+# Check if NVM is installed via Homebrew
+if ! command -v nvm &> /dev/null; then
+    echo "NVM not found. Please ensure it's installed via Homebrew first."
+    exit 1
+fi
+
+# Source NVM to make it available in this script
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+# Install Node.js LTS if not already installed
+echo "Checking for Node.js LTS..."
+if ! nvm list | grep -q "lts"; then
+    echo "Installing Node.js LTS..."
+    nvm install --lts
+    nvm use --lts
+    nvm alias default lts/*
+else
+    echo "Node.js LTS already installed"
+    nvm use --lts
+fi
+
+# Verify installation
+node_version=$(node --version 2>/dev/null || echo "none")
+npm_version=$(npm --version 2>/dev/null || echo "none")
+
+echo "Node.js version: $node_version"
+echo "npm version: $npm_version"
+
+echo "===== Node.js LTS setup complete! ====="
+exit 0
+{{- end }}

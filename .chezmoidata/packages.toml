@@ -65,6 +65,7 @@ casks = [
     "notion-calendar",     # Calendar app
     "github",              # Github GUI
     "todoist",             # Task management tool
+    "claude",              # claude Desktop
 ]
 formulae = [
     "atuin",               # Better shell history
@@ -110,6 +111,16 @@ casks = [
 
 ]
 formulae = []
+
+[packages.npm]
+[packages.npm.common]
+packages = [
+    "@anthropic-ai/claude-code", # Claude Code CLI
+]
+[packages.npm.work_computer]
+packages = []
+[packages.npm.personal_computer]
+packages = []
 
 [packages.mas]
 [packages.mas.common]
