@@ -1,7 +1,0 @@
-{{- if .use_secrets -}}
-# GitHub CLI configuration with 1Password integration
-github.com:
-    user: {{ .git_user }}
-    oauth_token: {{ onepassword .secrets.github_token | default "your-github-token-here" }}
-    git_protocol: ssh
-{{- end }}
