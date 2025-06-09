@@ -32,7 +32,16 @@ if ! nvm list | grep -q "lts"; then
     nvm alias default lts/*
 else
     echo "Node.js LTS already installed"
-    nvm use --lts
+    # Get the latest LTS version and use it (don't fail if already using it)
+    lts_version=$(nvm version-remote --lts)
+    if nvm list | grep -q "$lts_version"; then
+        nvm use --lts || true  # Don't fail if already using LTS
+    else
+        echo "Installing latest LTS version..."
+        nvm install --lts
+        nvm use --lts
+        nvm alias default lts/*
+    fi
 fi
 
 # Verify installation

@@ -1,13 +1,22 @@
 {{- if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
-# This script installs npm global packages using bun
+# This script installs npm global packages using available package manager
 
-set -e  # Exit on error
-echo "===== Installing npm Global Packages with Bun ====="
+# Note: Not using 'set -e' to allow graceful error handling
 
-# Check if bun is installed
-if ! command -v bun &> /dev/null; then
-    echo "Bun not found. Please ensure it's installed via Homebrew first."
+# Determine which package manager to use (priority: bun > pnpm > npm)
+PACKAGE_MANAGER=""
+if command -v bun &> /dev/null; then
+    PACKAGE_MANAGER="bun"
+    echo "===== Installing npm Global Packages with Bun ====="
+elif command -v pnpm &> /dev/null; then
+    PACKAGE_MANAGER="pnpm"
+    echo "===== Installing npm Global Packages with pnpm ====="
+elif command -v npm &> /dev/null; then
+    PACKAGE_MANAGER="npm"
+    echo "===== Installing npm Global Packages with npm ====="
+else
+    echo "No supported package manager found (bun, pnpm, or npm). Please install one first."
     exit 1
 fi
 
@@ -18,7 +27,7 @@ export NVM_DIR="$HOME/.nvm"
 
 # Use LTS Node.js
 if command -v nvm &> /dev/null; then
-    nvm use --lts
+    nvm use --lts || echo "Warning: Failed to switch to LTS Node.js, continuing..."
 fi
 
 # Define arrays of packages to install
@@ -41,8 +50,18 @@ packages=(
 )
 
 # Get list of currently installed global packages
-echo "Checking currently installed global packages..."
-currently_installed=$(bun pm ls --global 2>/dev/null | grep -E '^[a-zA-Z@]' | awk '{print $1}' | sort || echo "")
+echo "Checking currently installed global packages with $PACKAGE_MANAGER..."
+case "$PACKAGE_MANAGER" in
+    "bun")
+        currently_installed=$(bun pm ls --global 2>/dev/null | grep -E '^[a-zA-Z@]' | awk '{print $1}' | sort || echo "")
+        ;;
+    "pnpm")
+        currently_installed=$(pnpm list --global --depth=0 2>/dev/null | sed -n '/^dependencies:/,/^$/p' | grep -E '^[a-zA-Z@]' | grep -v '^dependencies:' | awk '{print $1}' | sort 2>/dev/null || echo "")
+        ;;
+    "npm")
+        currently_installed=$(npm list --global --depth=0 2>/dev/null | grep -E '^[├└]─ ' | sed 's/[├└]─ //' | awk '{print $1}' | cut -d'@' -f1 | sort || echo "")
+        ;;
+esac
 
 # Install packages
 echo "Installing global packages..."
@@ -63,7 +82,17 @@ for package in "${packages[@]}"; do
         echo "Package already installed: $package_name"
     else
         echo "Installing package: $package"
-        bun install --global "$package" || echo "Failed to install $package, continuing..."
+        case "$PACKAGE_MANAGER" in
+            "bun")
+                bun install --global "$package" || echo "Failed to install $package, continuing..."
+                ;;
+            "pnpm")
+                pnpm install --global "$package" || echo "Failed to install $package, continuing..."
+                ;;
+            "npm")
+                npm install --global "$package" || echo "Failed to install $package, continuing..."
+                ;;
+        esac
     fi
 done
 
