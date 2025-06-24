@@ -5,7 +5,7 @@
 theme = OneHalfDark
 
 # FONT SETTINGS
-font-size = 14
+font-size = 12
 font-family = JetBrains Mono
 
 # QUICK TERMINAL
