@@ -37,38 +37,6 @@
   "features": {
     "edit_prediction_provider": "zed"
   },
-  "context_servers": {
-    "mcp-server-context7": {
-      "tools": {
-        "get-library-docs": true,
-        "resolve-library-id": true
-      }
-    },
-    "mcp-server-sequential-thinking": {
-      "tools": {
-        "sequentialthinking": true
-      }
-    },
-    "browser-tools-context-server": {
-      "settings": {
-        "port": 3000,
-        "host": "127.0.0.1"
-      }
-    }
-  },
-  "agent": {
-    "thread_summary_model": {
-      "provider": "zed.dev",
-      "model": "claude-4-sonnet-latest"
-    },
-
-    "default_profile": "ask",
-    "default_model": {
-      "provider": "zed.dev",
-      "model": "claude-4-sonnet-latest"
-    },
-    "version": "2"
-  },
 
   // ===============================================
   // Extensions & Tools
@@ -160,6 +128,13 @@
     "tailwindcss-language-server": {
       "settings": {
         "classFunctions": ["cva", "cx", "tw", "clsx", "tw\\.[a-z-]+"]
+      }
+    },
+    "eslint": {
+      "settings": {
+        "experimental": {
+          "useFlatConfig": true
+        }
       }
     }
   },
