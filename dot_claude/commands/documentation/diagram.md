@@ -8,6 +8,8 @@ Generate architecture, flow, and relationship diagrams from code structure and d
 
 ### 1. Code Analysis
 
+- Analyse the code to generate a list of components, their dependencies, and their interactions.
+
 ### 2. Diagram Types
 
 #### Architecture Diagram (ASCII)
@@ -235,57 +237,6 @@ classDiagram
                     └─────────────┘
 ```
 
-### 4. Auto-Generation Script
-
-```typescript
-// generate-diagram.ts
-import { walk } from "@std/fs/walk.ts";
-
-async function generateArchitectureDiagram(rootPath: string) {
-  const components: Map<string, string[]> = new Map();
-
-  // Scan for components
-  for await (const entry of walk(rootPath)) {
-    if (entry.isFile && entry.name.endsWith(".ts")) {
-      const content = await Deno.readTextFile(entry.path);
-
-      // Extract imports
-      const imports = content.match(/import.*from\s+['"](.+)['"]/g);
-      if (imports) {
-        components.set(entry.path, imports);
-      }
-    }
-  }
-
-  // Generate mermaid diagram
-  let diagram = "graph TD\n";
-
-  components.forEach((imports, file) => {
-    const fileName = file.split("/").pop()?.replace(".ts", "");
-    imports.forEach((imp) => {
-      const dep = imp.match(/['"](.+)['"]/)?.[1];
-      if (dep && !dep.startsWith("@") && !dep.startsWith(".")) {
-        diagram += `  ${fileName} --> ${dep}\n`;
-      }
-    });
-  });
-
-  return diagram;
-}
-```
-
-### 5. Interactive Diagrams
-
-```html
-<!-- For web output -->
-<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-<script>
-  mermaid.initialize({ startOnLoad: true });
-</script>
-
-<div class="mermaid">${generatedDiagram}</div>
-```
-
 ## Output Format
 
 ```markdown
@@ -310,12 +261,6 @@ async function generateArchitectureDiagram(rootPath: string) {
 - A → B: Data flow for X
 - B → C: Triggers Y process
 - C → A: Returns Z result
-
-## Notes
-
-- [Important architectural decisions]
-- [Scalability considerations]
-- [Security boundaries]
 ```
 
 ## Diagram Best Practices
@@ -338,4 +283,4 @@ async function generateArchitectureDiagram(rootPath: string) {
 
 ## Integration with Other Commands
 
-Use with `/document` to include diagrams in generated documentation
+Combine with `/document` to include diagrams in generated documentation

@@ -1,8 +1,6 @@
 ---
-description: Provide comprehensive explanation of code, architecture, or technical concepts with deep context and examples.
+description: Provides comprehensive explanation of code, architecture, or technical concepts with deep context and examples.
 ---
-
-# /explain
 
 Provide comprehensive explanation of code, architecture, or technical concepts with deep context and examples.
 

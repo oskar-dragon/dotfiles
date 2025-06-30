@@ -1,4 +1,6 @@
-# /investigate
+---
+description: Conducts thorough investigation of a topic/technology or approach using codebase analysis, web research to come up with optimal solution with up to date information.
+---
 
 Conduct thorough investigation of a topic, technology, or approach using codebase analysis and web research to determine optimal solutions with up-to-date information.
 
@@ -41,7 +43,6 @@ Conduct thorough investigation of a topic, technology, or approach using codebas
    - Check GitHub star trends
 
 3. **Community Insights**
-   - Search Stack Overflow for recent solutions
    - Check Reddit discussions (r/programming, topic-specific subreddits)
    - Review GitHub issues and discussions
    - Analyze npm/crates.io download trends
@@ -235,13 +236,7 @@ Investigation would:
    - Present multiple viewpoints
    - Include contrarian opinions
    - Acknowledge trade-offs
-
-### Integration with Other Commands
-
-- Use after `/options` to deep-dive into specific choice
-- Combine with `/elaborate` for implementation details
-- Follow with `/plan` to execute recommendation
-- Use `/benchmark` to validate performance claims
+```
 
 ### Output Guidelines
 
@@ -252,4 +247,10 @@ Investigation would:
 - Link to authoritative sources
 - Acknowledge uncertainty where it exists
 - **IMPORTANT**: Return investigation results directly to the user in the response - DO NOT write results to a file unless explicitly requested
-```
+
+### Integration with Other Commands
+
+- Use after `/options` to deep-dive into specific choice
+- Combine with `/elaborate` for implementation details
+- Follow with `/plan` to execute recommendation
+- Use `/benchmark` to validate performance claims

@@ -229,6 +229,10 @@ _Architecture diagram created with `/diagram` command - see [diagram source](./d
 - Include scaling and load testing approaches
 ```
 
+## Integration with Other Commands
+
+Combine with `/diagram` to create diagrams when needed
+
 ## Next steps
 
 I'll help you create comprehensive documentation for $ARGUMENTS, following our project's documentation standards.
