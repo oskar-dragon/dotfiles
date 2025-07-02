@@ -1,16 +1,27 @@
 # Claude Code Configuration
 
-Personal Claude Code setup with security restrictions, dark theme, and functional programming preferences.
+Personal configuration and development preferences for Claude Code CLI.
 
-## Files
+## Quick Start
 
-- `settings.json` - Main config (permissions, env, UI)
-- `CLOUDE.md` - Coding conventions and preferences
-- `README.md` - This file
-- `docs` - Documentation and resources
+```bash
+# Configuration is automatically loaded by Claude Code
+claude-code --help
+```
+
+## Configuration Files
+
+- `CLAUDE.md` - Personal development preferences and guidelines
+- `settings.json` - Claude Code CLI settings and permissions
+- `projects/` - Session history and project contexts
 
 ## Key Features
 
-- Opus 4 model with Zed editor
-- Restricted bash commands and file access
-- British English, functional patterns, kebab-case files
+- Modern development tool preferences (ripgrep, fd, bat, etc.)
+- TypeScript/React frontend development setup
+- Security-focused file access permissions
+- Standardised coding conventions and workflows
+
+## Settings
+
+The configuration enforces British English, functional programming patterns, and modern CLI tools. Security permissions restrict access to sensitive files and dangerous operations.

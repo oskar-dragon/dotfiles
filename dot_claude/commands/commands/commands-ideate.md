@@ -1,5 +1,5 @@
 ---
-description: Generate ideas for useful project-specific slash commands that can automate common tasks or workflows.
+description: Generate ideas for useful project-specific slash commands.
 ---
 
 Given the following context about a project or situation, suggest 5-10 useful slash commands that could automate common tasks or workflows. For each command idea, provide:

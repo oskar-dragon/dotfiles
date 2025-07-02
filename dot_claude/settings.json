@@ -4,11 +4,12 @@
       "Bash(curl:*)",
       "Bash(rm:*)",
       "Edit(node_modules/**)",
-      "Read(.env)",
+      "Read(.env.*)",
+      "Read(*.key)",
       "Bash(rm -rf *)",
       "Bash(sudo *)",
       "Edit(.env)",
-      "Edit(.env.local)",
+      "Edit(.env.*)",
       "Edit(*.secret)",
       "Edit(*.key)",
       "Read(.env)",
@@ -19,7 +20,7 @@
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
     "DISABLE_AUTOUPDATER": "0",
     "EDITOR": "zed",
-    "ANTHROPIC_MODEL": "claude-opus-4-20250514"
+    "GIT_EDITOR": "zed --wait"
   },
   "ignorePatterns": [
     "node_modules/**",
@@ -61,18 +62,10 @@
     "*.swp",
     "*.swo"
   ],
-  "ui": {
-    "theme": "dark",
-    "notifications": true,
-    "vim_mode": false,
-    "line_breaks": {
-      "escape_enter": true,
-      "meta_enter": true
-    }
-  },
-  "git": {
-    "auto_commit": false,
-    "commit_message_template": "feat: %s"
-  },
+  "theme": "dark",
+  "preferredNotifChannel": "terminal_bell",
+  "verbose": true,
+  "cleanupPeriodDays": 90,
+  "includeCoAuthoredBy": false,
   "mcpServers": {}
 }

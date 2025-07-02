@@ -1,5 +1,5 @@
 ---
-description: Conducts thorough investigation of a topic/technology or approach using codebase analysis, web research to come up with optimal solution with up to date information.
+description: Conducts thorough investigation of a topic.
 ---
 
 Conduct thorough investigation of a topic, technology, or approach using codebase analysis and web research to determine optimal solutions with up-to-date information.
@@ -19,11 +19,37 @@ Conduct thorough investigation of a topic, technology, or approach using codebas
    - Identify key terms and concepts
    - Determine investigation scope
 
+2. **Initial Codebase Scan**
+
+   ```bash
+   # Search for existing implementations
+   rg "[key terms]" --type-add 'code:*.{go,ts,js}' -t code
+
+   # Find related configuration
+   rg "[key terms]" --type yaml --type json --type toml
+
+   # Look for documentation
+   fd "README|docs" --type f | xargs rg -l "[key terms]"
+   ```
+
 ### Phase 2: Deep Analysis
 
 #### Codebase Investigation
 
-1. **Architecture Analysis**
+1. **Pattern Discovery**
+
+   ```bash
+   # Find implementation patterns
+   rg "[concept]" -A 5 -B 2
+
+   # Analyze dependencies
+   rg "[concept]" package.json go.mod
+
+   # Check test
+   fd "test|spec" --type f | xargs rg -l "[concept]"
+   ```
+
+2. **Architecture Analysis**
    - Map component relationships
    - Identify integration points
    - Document data flows
@@ -77,7 +103,7 @@ Conduct thorough investigation of a topic, technology, or approach using codebas
 ````markdown
 # Investigation: [Topic]
 
-## Executive Summary
+## Summary
 
 [2-3 sentence overview of findings and recommendation]
 
@@ -174,42 +200,50 @@ Conduct thorough investigation of a topic, technology, or approach using codebas
 - [Official Documentation](link)
 - [Tutorial/Guide](link)
 - [Community Forum](link)
-- [Example Repository](link)
+- [Example Repository](link)§
 
-```
 ### Investigation Examples
 
 #### Example 1: State Management
+
 ```
 
 /investigate What's the best state management solution for our Rust microservices?
 
 ```
+
 Investigation would:
+
 - Analyze current state handling in codebase
 - Research Rust state management patterns (2025)
 - Compare options (Actor model, Event Sourcing, CQRS)
 - Recommend based on project needs
 
 #### Example 2: Authentication Strategy
+
 ```
 
 /investigate Should we migrate from JWT to PASETO for our authentication?
 
 ```
+
 Investigation would:
+
 - Review current JWT implementation
 - Research PASETO adoption and security benefits
 - Analyze migration complexity
 - Provide security comparison and recommendation
 
 #### Example 3: Database Technology
+
 ```
 
 /investigate Is ScyllaDB the right choice for our high-throughput event storage?
 
 ```
+
 Investigation would:
+
 - Examine current data patterns and volume
 - Research ScyllaDB vs alternatives (Cassandra, DynamoDB)
 - Analyze performance benchmarks
@@ -236,7 +270,13 @@ Investigation would:
    - Present multiple viewpoints
    - Include contrarian opinions
    - Acknowledge trade-offs
-```
+
+### Integration with Other Commands
+
+- Use after `/options` to deep-dive into specific choice
+- Combine with `/elaborate` for implementation details
+- Follow with `/plan` to execute recommendation
+- Use `/benchmark` to validate performance claims
 
 ### Output Guidelines
 
@@ -248,9 +288,6 @@ Investigation would:
 - Acknowledge uncertainty where it exists
 - **IMPORTANT**: Return investigation results directly to the user in the response - DO NOT write results to a file unless explicitly requested
 
-### Integration with Other Commands
+```
 
-- Use after `/options` to deep-dive into specific choice
-- Combine with `/elaborate` for implementation details
-- Follow with `/plan` to execute recommendation
-- Use `/benchmark` to validate performance claims
+```

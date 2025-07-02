@@ -39,9 +39,9 @@ formulae = [
     "zsh",           # Z shell
     "gh",            # GitHub CLI
     "git-workspace", # Git workspace management tool
-    "ripgrep",
-    "powerlevel10k",
-
+    "ripgrep",       # Fancier GREP
+    "powerlevel10k", # Powerlevel10k theme for Zsh
+    "fd",            # File finder
 
     # Typescript Tools
     "nvm", # Node Version Manager

@@ -1,56 +1,16 @@
 ---
-description: Generates architecture, flow, and relationship diagrams from code structure and documentation using ASCII art and mermaid syntax.
+description: Generates architecture, flow, and relationship diagrams.
 ---
 
-Generate architecture, flow, and relationship diagrams from code structure and documentation using ASCII art and mermaid syntax. All diagrams should be placed in a project directory named `docs/diagrams` in a markdown format.
+Generate architecture, flow, and relationship diagrams from code structure and documentation using mermaid syntax.
+
+Default Output Location: /docs/diagrams/ directory
 
 ## Diagram Generation Process
 
 ### 1. Code Analysis
 
 ### 2. Diagram Types
-
-#### Architecture Diagram (ASCII)
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                      Frontend (React/Fresh)                  │
-│  ┌─────────────┐  ┌──────────────┐  ┌─────────────────┐   │
-│  │   Browser   │  │   Mobile App │  │   CLI Client    │   │
-│  └──────┬──────┘  └──────┬───────┘  └────────┬────────┘   │
-└─────────┼─────────────────┼──────────────────┼─────────────┘
-          │                 │                  │
-          └─────────────────┴──────────────────┘
-                            │
-                  ┌─────────▼─────────┐
-                  │   Load Balancer   │
-                  │    (HAProxy)      │
-                  └─────────┬─────────┘
-                            │
-        ┌───────────────────┴───────────────────┐
-        │                                       │
-┌───────▼────────┐                    ┌────────▼────────┐
-│   API Gateway  │                    │  Static Assets  │
-│  (Kong/Envoy)  │                    │     (CDN)       │
-└───────┬────────┘                    └─────────────────┘
-        │
-┌───────┴────────────────────────────────────┐
-│              Microservices                  │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐ │
-│  │   Auth   │  │  Orders  │  │ Payments │ │
-│  │ Service  │  │ Service  │  │ Service  │ │
-│  └────┬─────┘  └────┬─────┘  └────┬─────┘ │
-└───────┼─────────────┼─────────────┼───────┘
-        │             │             │
-        └─────────────┴─────────────┘
-                      │
-         ┌────────────┴────────────┐
-         │                         │
-┌────────▼────────┐      ┌─────────▼────────┐
-│    PostgreSQL   │      │   Message Queue  │
-│   (Primary DB)  │      │    (RabbitMQ)    │
-└─────────────────┘      └──────────────────┘
-```
 
 #### Flow Diagram (Mermaid)
 
