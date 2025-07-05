@@ -11,16 +11,15 @@ IMPORTANT: These are my development preferences and guidelines. YOU MUST follow 
 ## Development Preferences
 
 - Prefer functional programming patterns
-- Use kebab-case for file names and directories
-- Use camelCase for variable and function names
-- Use PascalCase for class names, types and React components
-- Use Types instead of interfaces
+- **ALWAYS** Use kebab-case for file names and directories
+- **ALWAYS** Use camelCase for variable and function names
+- **ALWAYS** Use PascalCase for class names, types and React components
+- **ALWAYS** Use types instead of interfaces
 
 ### Testing
 
 - **ALWAYS** write clear, descriptive test names for better readability
 - **ALWAYS** prefer running single, targeted tests over the whole test suite for performance
-<!-- TODO: add test for Claude.MD in a project -->
 
 ### Language & Framework Preferences
 
@@ -113,46 +112,6 @@ git worktree remove ../project-feature
 - **NEVER** share API keys, credentials, or proprietary code
 - **USE** environment variables or secret management tools
 - **SANITIZE** logs and debug output before sharing
-
-## Project Planning & Coordination
-
-### PLAN.md Adherence
-
-When a `PLAN.md` file exists in the project root, **YOU MUST**:
-
-1. **READ** the PLAN.md file at the start of each session to understand current tasks and priorities
-2. **FOLLOW** the task breakdown and execution strategy defined in the plan
-3. **RESPECT** task dependencies and join points for multi-agent coordination
-4. **UPDATE** task status in the plan as work progresses
-5. **COORDINATE** with other agents at defined synchronization points
-6. **USE** the TodoWrite tool to track individual tasks from the plan
-
-### Multi-Agent Workflow
-
-When working as part of a multi-agent team:
-
-- **CHECK** `/tmp/{project-name}/project-status.md` or coordination files for shared state
-- **WORK** only on assigned tasks to avoid conflicts
-- **COMMUNICATE** progress through PR comments or status files
-- **WAIT** at join points until all parallel work is complete
-- **MERGE** work carefully following the plan's integration strategy
-- **USE** git worktrees to work on separate branches without conflicts
-- **CREATE** status files in `/tmp/{project-name}/claude-scratch/` for inter-agent communication
-- **COORDINATE** using shared JSON status files for structured updates in project-specific directories
-
-## Performance & Optimization
-
-### Token Efficiency
-
-- **OPTIMIZE** prompts for clarity and brevity
-- **BATCH** related operations in single requests
-- **USE** structured outputs (JSON) for parsing efficiency
-- **CACHE** common patterns and solutions locally
-
-### Parallel Development
-
-- **IMPLEMENT** clear synchronization points for multi-agent work
-- **MAINTAIN** shared state files in `/tmp/{project-name}/`
 
 ## Claude Code Features
 
