@@ -5,14 +5,36 @@ description: Generate documentation for a specific component or feature.
 ## Usage
 
 ```
-/document [code snippet, file path, or concept] [flags...]
+/document [target] [mode=analysis|context|hybrid] [flags...]
 ```
 
-### Flags
+### Modes
 
 - `mode=analysis` (default): Full codebase analysis before documentation
 - `mode=context`: Use existing context from previous `/explain` command
-- `file=true|false`: (default: false) Creates a new file with documentation as an output in `docs` directory in root directory, and uses numbers as prefixes (e.g. `001-api.md`)
+- `mode=hybrid`: Combine analysis with existing context
+
+### Flags
+
+- `depth=shallow|deep` - Analysis depth (default: deep)
+- `include-tests=true|false` - Include test analysis (default: true)
+- `format=markdown|notion` - Output format (default: markdown)
+
+### Examples
+
+```bash
+# Standard analysis mode
+/document src/components/Button
+
+# Use context from previous /explain
+/document src/components/Button mode=context
+
+# Hybrid approach
+/document src/components/Button mode=hybrid depth=shallow
+
+# With additional flags
+/document src/api/auth mode=analysis include-tests=false format=confluence
+```
 
 ## Mode-Specific Behaviour
 
@@ -21,35 +43,44 @@ description: Generate documentation for a specific component or feature.
 **Always start by analysing the codebase first:**
 
 1. **Codebase Structure Analysis**
-
-- Use filesystem tools to explore the target component/feature structure
-- Identify all related files, dependencies, and configuration
-- Map relationships between components, services, and utilities
-- Understand the technology stack and external dependencies
-- Identify environment-specific configurations and requirements
+   - Use filesystem tools to explore the target component/feature structure
+   - Identify all related files, dependencies, and configuration
+   - Map relationships between components, services, and utilities
+   - Understand the technology stack and external dependencies
+   - Identify environment-specific configurations and requirements
 
 2. **Context Discovery**
-
-- Search for existing related documentation
-- Identify integration points with other systems/components
-- Understand user personas and use cases
-- Map testing strategies and patterns already in place
+   - Search for existing related documentation
+   - Identify integration points with other systems/components
+   - Understand user personas and use cases
+   - Map testing strategies and patterns already in place
 
 ### Context Mode
 
 **Use existing context from previous `/explain` command:**
 
 1. **Context Validation**
-
-- Check if previous `/explain` context is available and relevant
-- Validate context freshness and accuracy
-- Identify any gaps in existing context
+   - Check if previous `/explain` context is available and relevant
+   - Validate context freshness and accuracy
+   - Identify any gaps in existing context
 
 2. **Context Enhancement**
+   - Supplement missing technical details if needed
+   - Validate current implementation against context
+   - Add recent changes not captured in original context
 
-- Supplement missing technical details if needed
-- Validate current implementation against context
-- Add recent changes not captured in original context
+### Hybrid Mode
+
+**Combine context with targeted analysis:**
+
+1. **Context Foundation**
+   - Load existing context from previous `/explain` command
+   - Use context as base understanding
+
+2. **Targeted Analysis**
+   - Perform focused analysis on areas not covered by context
+   - Validate context accuracy with current codebase state
+   - Fill gaps with specific codebase exploration
 
 ## Content Generation Standards
 
@@ -119,11 +150,11 @@ Follow this structure, adapting sections based on the component/feature being do
 
 ### [Category] (e.g., Naming Conventions)
 
-[Specific guidance with examples and optional diagrams]
+[Specific guidance with examples]
 
 ### [Category] (e.g., Lifecycle Management)
 
-[Specific guidance with examples and optional diagrams]
+[Specific guidance with examples]
 
 ## Testing
 
@@ -173,7 +204,9 @@ For some cases, diagrams can provide a clearer understanding of complex systems 
 ```markdown
 ## Architecture Overview
 
-[Architecture Diagram](./diagrams/feature-flags-architecture.md)
+![Architecture Diagram](./diagrams/feature-flags-architecture.svg)
+
+_Architecture diagram created with `/diagram` command - see [diagram source](./diagrams/feature-flags-architecture.md)_
 ```
 
 **When to suggest diagram creation:**
@@ -243,3 +276,61 @@ For some cases, diagrams can provide a clearer understanding of complex systems 
 - Reference monitoring and observability setup
 - Document caching strategies and considerations
 - Include scaling and load testing approaches
+
+```
+
+## Implementation Logic
+
+### Mode Detection and Execution
+
+1. **Parse Arguments**: Extract target, mode, and flags from command input
+2. **Mode Selection**:
+   - If `mode=context` and no context available → fallback to `analysis`
+   - If `mode=context` and context available → use context mode
+   - If `mode=hybrid` → combine context with analysis
+   - Default to `analysis` mode
+
+3. **Context Availability Check**:
+   - Look for previous `/explain` session data
+   - Validate context relevance to current target
+   - Check context freshness and completeness
+
+4. **Execution Strategy**:
+   - **Analysis Mode**: Full codebase exploration → documentation
+   - **Context Mode**: Context validation → enhancement → documentation
+   - **Hybrid Mode**: Context foundation → targeted analysis → documentation
+
+### Flag Processing
+
+- `depth=shallow`: Limited file scanning, focus on main implementation
+- `depth=deep`: Comprehensive analysis including dependencies and tests
+- `include-tests=false`: Skip test file analysis and documentation
+- `format=confluence|notion`: Adapt output format for target platform
+
+## Next Steps
+
+I'll help you create comprehensive documentation for the specified target, following our project's documentation standards.
+
+**Based on the selected mode, I'll:**
+
+### Analysis Mode
+1. Analyse the code structure and purpose of the target
+2. Map inputs, outputs, and behaviour
+3. Understand user interaction flows
+4. Identify edge cases and error handling
+5. Map integration points with other components/systems
+
+### Context Mode
+1. Load and validate existing context from previous `/explain`
+2. Enhance context with missing technical details
+3. Validate context accuracy against current implementation
+4. Fill documentation gaps using context knowledge
+
+### Hybrid Mode
+1. Use existing context as foundation
+2. Perform targeted analysis for missing areas
+3. Validate context accuracy with current codebase
+4. Combine both sources for comprehensive documentation
+
+Then I'll generate documentation in `docs/` directory following this template:
+```
