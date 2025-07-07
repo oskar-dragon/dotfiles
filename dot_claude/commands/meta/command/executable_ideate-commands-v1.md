@@ -17,7 +17,7 @@ $ARGUMENTS
 
 Consider commands that could help with:
 
-- Repetitive development tasks
+- Repetitive tasks
 - Code quality and consistency
 - Debugging and troubleshooting
 - Documentation and knowledge sharing

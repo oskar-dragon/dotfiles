@@ -79,18 +79,6 @@ Follow this structure, adapting sections based on the component/feature being do
 
 [Organised by context/application with file links]
 
-### [Context 1] (e.g., Modern App Router)
-
-**Location**: [Link to implementation directory]
-**Approach**: [High-level approach description]
-**Key Files**: [List with links]
-
-### [Context 2] (e.g., Legacy Pages Router)
-
-**Location**: [Link to implementation directory]
-**Approach**: [High-level approach description]
-**Key Files**: [List with links]
-
 ## Usage Examples
 
 [Practical examples with file references, not code copies unless it's better to keep them here as they will change too often]
@@ -133,6 +121,7 @@ Follow this structure, adapting sections based on the component/feature being do
 ## Related Documentation
 
 [Links to related internal documentation]
+[Links to related external documentation]
 ```
 
 ## Diagram Integration
