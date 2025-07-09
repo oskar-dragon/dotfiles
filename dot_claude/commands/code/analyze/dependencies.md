@@ -1,402 +1,211 @@
 ---
-allowed-tools: Bash(fd:*), Bash(rg:*), Bash(git:*), Bash(npm:*), Bash(cargo:*), Bash(go:*), Bash(jq:*), Bash(gdate:*), Read, Write, Task
-description: Ultra-fast parallel dependency analysis using 10 sub-agents for 10x speedup
+allowed-tools: Read, Bash(fd:*), Bash(rg:*), Bash(go:*), Bash(npm:*), Bash(yarn:*), Bash(pip:*), Bash(cargo:*), Task
+description: Analyze project dependencies for security, updates, and optimization opportunities
 ---
 
 # /dependencies
 
+Analyze project dependencies to identify security vulnerabilities, outdated packages, unused dependencies, and optimization opportunities.
+
 ## Context
 
-- Session ID: !`gdate +%s%N`
-- Current directory: !`pwd`
-- Project structure: !`fd . -t d -d 2 | head -10 || echo "Limited directory access"`
-- Technology files: !`fd -e json -e toml -e xml -e txt -e lock . | rg "(package\.json|go\.mod|bun\.lockb)" | head -10 || echo "No dependency files found"`
-- Dependency directories: !`fd "(node_modules|build)" -t d | head -5 || echo "No dependency directories found"`
-- Git repository: !`git status --porcelain | head -5 2>/dev/null || echo "Not a git repository"`
-- Current branch: !`git branch --show-current 2>/dev/null || echo "No git repository"`
+Current directory: !`pwd`
+Package managers detected: !`fd "(package\.json|go\.mod|requirements\.txt|Cargo\.toml|pom\.xml|build\.gradle)$" . | head -10 || echo "No package managers detected"`
+Technology stack: !`fd "(package\.json|go\.mod|requirements\.txt|Cargo\.toml)$" . | head -5 | xargs -I {} basename {} || echo "Unknown stack"`
 
-Analyze and visualize dependency relationships, impact analysis, and coupling patterns within codebases, systems, or project components.
+## Usage
+
+```
+/dependencies
+```
 
 ## Your Task
 
-**IMMEDIATELY DEPLOY 10 PARALLEL SUB-AGENTS** for lightning-fast dependency analysis of: $ARGUMENTS
+**Step 1: Package Manager Detection**
 
-Think hard about complex dependency relationships while maximizing parallel execution.
+Detect and analyze package managers in the project:
 
-## Parallel Sub-Agent Execution Framework
+- **Go Projects**: Analyze go.mod, go.sum files
+- **Node.js Projects**: Analyze package.json (npm/yarn/pnpm/bun)
+- **Python Projects**: Analyze requirements.txt, pyproject.toml
+- **Rust Projects**: Analyze Cargo.toml, Cargo.lock
+- **Java Projects**: Analyze pom.xml, build.gradle
 
-STEP 1: Initialize Analysis Session
+**Step 2: Dependency Mapping**
 
-- Create session state file: /tmp/dependency-analysis-$SESSION_ID.json
-- Initialize results directory: /tmp/dependency-results-$SESSION_ID/
-- Set up checkpoint system for parallel agent coordination
-- Determine analysis scope: $ARGUMENTS
+Map dependencies and their relationships:
 
-STEP 2: **LAUNCH ALL 10 AGENTS SIMULTANEOUSLY**
+- List direct dependencies from manifest files
+- Identify dependency depth and complexity
+- Detect circular dependencies if present
+- Analyze internal module dependencies
 
-**NO SEQUENTIAL PROCESSING** - Deploy these agents in parallel:
+**Step 3: Security Audit**
 
-1. **Technology Stack Agent**: Detect all languages, frameworks, and build tools
-2. **Direct Dependencies Agent**: Analyze explicit package dependencies
-3. **Transitive Dependencies Agent**: Map entire dependency tree
-4. **Import Analysis Agent**: Scan all import/require statements
-5. **Infrastructure Dependencies Agent**: Find Docker, K8s, cloud dependencies
-6. **Runtime Dependencies Agent**: Identify DB, API, service dependencies
-7. **Security Analysis Agent**: Scan for vulnerabilities and outdated packages
-8. **Coupling Analysis Agent**: Measure component interdependencies
-9. **Circular Dependencies Agent**: Detect dependency cycles
-10. **License Compliance Agent**: Check license compatibility
+Run security audits for each package manager:
 
-Each agent operates independently to maximize performance.
+- **Go**: `go list -m all` with vulnerability scanning
+- **Node.js**: `npm audit` or `yarn audit`
+- **Python**: `pip-audit` or `safety check` (if available)
+- **Rust**: `cargo audit` (if available)
+- **Java**: `mvn dependency:tree` with security checks
 
-STEP 3: Parallel Dependency Discovery
+Prioritize findings by severity (Critical > High > Medium > Low)
 
-**ALL AGENTS WORK CONCURRENTLY:**
+**Step 4: Outdated Dependencies Analysis**
 
-**Code-Level Dependencies Discovery:**
+Check for outdated packages:
 
-```bash
-# Language-specific dependency files
-fd "package.json|go.mod" --type f || echo "No dependency files found"
+- **Go**: `go list -u -m all`
+- **Node.js**: `npm outdated` or `yarn outdated`
+- **Python**: `pip list --outdated`
+- **Rust**: `cargo outdated` (if available)
+- **Java**: `mvn versions:display-dependency-updates`
 
-# Import/require statements analysis
-rg "import|require|use|from|include" -n --type-add 'code:*.{go,ts,js}' | head -20 || echo "No import statements found"
+Categorize updates by type (patch/minor/major) and identify breaking changes
 
-# Internal module dependencies
-rg "\.\/|\.\.\/|@\/" -n | head -15 || echo "No relative imports found"
-rg "src\/|lib\/|internal\/" -n | head -15 || echo "No internal imports found"
-```
+**Step 5: Unused Dependencies Detection**
 
-**Infrastructure Dependencies:**
+Find unused dependencies:
 
-```bash
-# Container and orchestration dependencies
-fd "Dockerfile|docker-compose" --type f || echo "No container configs found"
-rg "image:|FROM|depends_on|volumes_from" --type yaml --type dockerfile | head -10 || echo "No container dependencies found"
+- Use `rg` to scan codebase for actual dependency usage
+- Identify dependencies never imported/required
+- Find dev dependencies leaked to production
+- Check for duplicate functionality packages
 
-# Service mesh and networking
-rg "Service|Ingress|ConfigMap|Secret" --type yaml | head -10 || echo "No k8s resources found"
-rg "host:|port:|endpoint:|url:" --type yaml --type json | head -10 || echo "No network configs found"
-```
+**Step 6: Optimization Analysis**
 
-**Runtime Dependencies:**
+Suggest optimizations:
 
-```bash
-# Database and external service connections
-rg "database|db|postgres|mysql|redis" -i -A 2 -B 1 | head -15 || echo "No database dependencies found"
-rg "http:|https:|grpc:|tcp:|amqp:" -A 1 -B 1 | head -15 || echo "No network protocols found"
-rg "api\..*\.|client\.|service\." -A 1 -B 1 | head -15 || echo "No service dependencies found"
-```
+- Recommend lighter alternatives (e.g., date-fns vs moment.js)
+- Identify packages replaceable with native code
+- Find bundle size reduction opportunities
+- Check for obsolete polyfills
 
-STEP 4: Technology-Specific Dependency Analysis
+**Step 7: License Compliance**
 
-### Phase 2: Dependency Mapping
+Check license compatibility:
 
-**Direct Dependencies**
+- Extract dependency licenses
+- Flag potentially incompatible licenses
+- Identify copyleft licenses requiring attention
 
-- First-order dependencies explicitly declared or imported
-- Version constraints and compatibility requirements
-- Mandatory vs. optional dependencies
-- Development vs. production dependencies
+## Expected Output
 
-**Transitive Dependencies**
+Generate a structured dependency analysis report:
 
-```bash
-# Dependency tree analysis
-npm ls --all  # Node.js full dependency tree
-go mod graph  # Go module dependencies
-```
-
-**Circular Dependencies**
-
-```bash
-# Find potential circular imports
-rg "import.*from ['\"]\.\./" -A 1 -B 1
-# Look for module cycles in different languages
-madge --circular src/  # JavaScript/TypeScript
-```
-
-**Hidden Dependencies**
-
-- Runtime service discovery dependencies
-- Configuration-based dependencies
-- Environment variable dependencies
-- Network protocol dependencies
-
-### Phase 3: Impact Analysis
-
-**Dependency Hierarchy**
-
-```markdown
-## Dependency Layers
-
-### Layer 1: Core/Foundation
-
-- [Base libraries and frameworks]
-- [System-level dependencies]
-- [Critical infrastructure components]
-
-### Layer 2: Business Logic
-
-- [Domain-specific libraries]
-- [Application frameworks]
-- [Business service dependencies]
-
-### Layer 3: Presentation/Interface
-
-- [UI frameworks and components]
-- [API client libraries]
-- [Protocol implementations]
-
-### Layer 4: Integration/External
-
-- [Third-party services]
-- [External APIs]
-- [Vendor-specific tools]
-```
-
-**Change Impact Scoring**
-
-```markdown
-## Dependency Risk Matrix
-
-| Component     | Dependents | Risk Level | Impact Scope  | Change Frequency |
-| ------------- | ---------- | ---------- | ------------- | ---------------- |
-| [Component A] | 15         | HIGH       | System-wide   | Weekly           |
-| [Component B] | 3          | LOW        | Module-level  | Monthly          |
-| [Component C] | 8          | MEDIUM     | Service-level | Quarterly        |
-
-**Risk Levels:**
-
-- HIGH: Changes affect >10 dependents or core functionality
-- MEDIUM: Changes affect 3-10 dependents or important features
-- LOW: Changes affect <3 dependents or isolated features
-```
-
-**Failure Mode Analysis**
-
-- What happens if each dependency becomes unavailable?
-- Which dependencies are single points of failure?
-- What are the cascading failure scenarios?
-- How can failures be contained or isolated?
-
-### Phase 4: Dependency Visualization
-
-**Dependency Graph Generation**
-
-```bash
-# Generate visual dependency graphs
-madge --image deps.svg src/  # JavaScript/TypeScript
-go mod graph | go-mod-graph-chart  # Go
-
-# Custom dependency mapping
-rg "import.*from|require\(" -o | sort | uniq -c | sort -nr
-```
-
-**Architecture Diagram**
-
-```markdown
-## System Dependency Map
-```
-
-┌─────────────────┐ ┌─────────────────┐
-│ Frontend │───▶│ API Gateway │
-│ (React/Deno) │ │ (Go/Connect) │
-└─────────────────┘ └─────────────────┘
-│
-┌────────▼────────┐
-│ Auth Service │
-│ (Rust/Axum) │
-└────────┬────────┘
-│
-┌────────▼────────┐
-│ PostgreSQL │
-│ (Database) │
-└─────────────────┘
-
-````
-### Phase 5: Coupling Analysis
-
-**Types of Coupling**
-- **Content Coupling**: Direct access to internal data
-- **Common Coupling**: Shared global data or state
-- **Control Coupling**: Passing control flags or commands
-- **Data Coupling**: Passing structured data between modules
-- **Message Coupling**: Communication through messages/events
-
-**Coupling Metrics**
-```bash
-# Analyze import/usage patterns
-rg "import.*{.*}" -c  # Count of imported symbols
-rg "export.*{.*}" -c  # Count of exported symbols
-rg "\w+\.\w+" -c     # Method/property access count
-
-# Interface surface area analysis
-rg "public|export|pub " -c  # Public interface size
-rg "private|internal" -c    # Internal implementation size
-````
-
-**Refactoring Opportunities**
-
-- Overly coupled components that should be decoupled
-- Missing abstractions that could reduce coupling
-- Opportunities for dependency inversion
-- Candidates for interface segregation
-
-### Phase 6: Dependency Health Assessment
-
-**Version Management**
-
-```bash
-# Find version conflicts and outdated dependencies
-npm outdated  # Node.js outdated packages
-go list -u -m all  # Go module updates available
-```
-
-**Security Analysis**
-
-```bash
-# Security vulnerability scanning
-npm audit  # Node.js security audit
-go list -json -m all | nancy sleuth  # Go security scanning
-```
-
-**License Compliance**
-
-```bash
-# License compatibility analysis
-license-checker  # Node.js license checker
-go-licenses check  # Go license verification
-```
-
-**Maintenance Burden**
-
-- Frequency of dependency updates required
-- Breaking changes and migration effort
-- Community support and maintenance status
-- Alternative options and migration paths
-
-### Phase 7: Optimization Strategies
-
-**Dependency Reduction**
-
-- Eliminate unused dependencies
-- Replace heavy dependencies with lighter alternatives
-- Bundle common functionality to reduce dependency count
-- Use standard library features instead of external dependencies
-
-## Output Structure
-
-```markdown
-# Dependency Analysis: [Scope]
+````markdown
+# Dependency Analysis Report
 
 ## Executive Summary
 
-- **Total Dependencies**: [Count by type]
-- **Highest Risk Dependencies**: [Top 3-5 critical dependencies]
-- **Optimization Opportunities**: [Key areas for improvement]
+- **Total Dependencies**: [direct] direct, [transitive] transitive
+- **Security Issues**: [critical] critical, [high] high, [medium] medium, [low] low
+- **Outdated Packages**: [count] packages need updates
+- **Unused Dependencies**: [count] packages can be removed
+- **Potential Savings**: [size] bundle size reduction possible
 
-## Dependency Inventory
+## Security Vulnerabilities
 
-### External Dependencies
+### Critical Issues
 
-| Name      | Version   | Type          | Risk Level     | Last Updated |
-| --------- | --------- | ------------- | -------------- | ------------ |
-| [Package] | [Version] | [Runtime/Dev] | [High/Med/Low] | [Date]       |
+- [Package Name] v[version]: [Description] → Update to v[new_version]
 
-### Internal Dependencies
+### High Priority
 
-| Component  | Dependents | Dependees | Coupling Level |
-| ---------- | ---------- | --------- | -------------- |
-| [Module A] | 5          | 3         | Medium         |
+- [Package Name] v[version]: [Description] → Update to v[new_version]
 
-## Impact Analysis
+## Outdated Dependencies
 
-### Critical Path Dependencies
+### Patch Updates (Safe)
 
-- [Dependencies that would halt system if unavailable]
+- [Package Name]: v[current] → v[latest] (fixes: [description])
 
-### Change Impact Map
+### Minor Updates (Low Risk)
 
-- [Which changes would affect which components]
+- [Package Name]: v[current] → v[latest] (adds: [description])
 
-### Failure Scenarios
+### Major Updates (Breaking Changes)
 
-- [What happens when key dependencies fail]
+- [Package Name]: v[current] → v[latest] (breaking: [description])
 
-## Coupling Assessment
+## Unused Dependencies
 
-### High Coupling Areas
+### Can Be Removed
 
-- [Components with excessive interdependencies]
+- [Package Name]: Not found in codebase
+- [Package Name]: Only used in tests but listed as dependency
 
-### Decoupling Opportunities
+### Recommendations
 
-- [Where abstractions could reduce coupling]
+- Remove unused packages: `npm uninstall package1 package2`
+- Move dev dependencies: `npm install --save-dev package3`
 
-### Interface Quality
+## Optimization Opportunities
 
-- [Assessment of dependency interfaces]
+### Bundle Size Reduction
 
-## Security & Compliance
+- Replace [heavy-package] with [lighter-alternative] (saves [size])
+- Use tree-shaking with [package-name]
+- Remove [obsolete-polyfill] (no longer needed)
 
-### Vulnerability Report
+### Performance Improvements
 
-- [Known security issues in dependencies]
+- Upgrade [package-name] for better performance
+- Consider native alternatives for [package-name]
 
-### License Compatibility
+## License Compliance
 
-- [License conflicts or compliance issues]
+### Potential Issues
 
-### Update Status
+- [Package Name]: [License] may conflict with project license
+- [Package Name]: Copyleft license requires attention
 
-- [Dependencies requiring updates]
+## Update Strategy
 
-## Optimization Recommendations
+### Immediate Actions (Security)
 
-### Short-term (1-4 weeks)
+```bash
+# Update security vulnerabilities
+npm install package1@latest package2@latest
+```
+````
 
-1. [Remove unused dependencies]
-2. [Update vulnerable packages]
-3. [Fix circular dependencies]
+### Safe Updates (Patches)
 
-### Medium-term (1-3 months)
-
-1. [Introduce abstraction layers]
-2. [Implement dependency injection]
-3. [Reduce coupling in high-risk areas]
-
-### Long-term (3-12 months)
-
-1. [Architectural refactoring]
-2. [Dependency consolidation]
-3. [Service boundary optimization]
-
-## Monitoring & Maintenance
-
-### Dependency Health Metrics
-
-- [Key metrics to track over time]
-
-### Automation Opportunities
-
-- [Automated dependency management tools]
-
-### Review Process
-
-- [Regular dependency review cadence]
+```bash
+# Apply patch updates
+npm update
 ```
 
-## Integration with Other Commands
+### Planned Updates (Breaking Changes)
 
-- Use with `/deep-dive` for detailed analysis of critical dependencies
-- Combine with `/investigate` to research dependency alternatives
-- Follow with `/plan` to organize dependency optimization work
-- Use with `/monitor` to track dependency health over time
-- Apply `/refactor` to implement decoupling strategies
+```bash
+# Test in development first
+npm install package3@latest
+# Review breaking changes and update code
+```
 
-The goal is to maintain healthy, secure, and manageable dependency relationships that support system evolution without creating excessive technical debt or operational risk.
+## Next Steps
+
+1. [ ] Apply security patches immediately
+2. [ ] Remove unused dependencies
+3. [ ] Test patch updates in development
+4. [ ] Plan major version upgrades
+5. [ ] Review license compliance issues
 
 ```
 
+## Examples
+
+### Example 1: Node.js Project
+`/dependencies` on a React project would analyze package.json, run npm audit, check for outdated packages, and suggest optimizations like replacing moment.js with date-fns.
+
+### Example 2: Go Project
+`/dependencies` on a Go project would analyze go.mod, check for security vulnerabilities, suggest updates, and identify unused imports.
+
+### Example 3: Multi-language Project
+`/dependencies` on a project with multiple package managers would analyze each stack separately and provide consolidated recommendations.
+
+**IMPORTANT**: Focus on actionable recommendations with specific commands for updates and removals.
 ```

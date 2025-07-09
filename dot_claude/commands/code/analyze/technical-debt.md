@@ -1,282 +1,190 @@
 ---
-allowed-tools: Read, Write, Bash(fd:*), Bash(rg:*), Bash(git:*), Bash(jq:*), Bash(gdate:*), Task
-description: Comprehensive technical debt analysis with actionable remediation strategies
+allowed-tools: [Read, Glob, Grep, Bash, LS]
+description: Analyze technical debt in codebase and provide prioritized remediation plan
 ---
+
+# /code/analyze/technical-debt
+
+Analyze technical debt in codebase and provide prioritized remediation plan.
 
 ## Context
 
-- Session ID: !`gdate +%s%N`
-- Project root: !`pwd`
-- Technology stack: !`fd "(go\.mod|package\.json)" . -d 2 | head -5 || echo "No technology files detected"`
-- Project structure: !`fd . -t d -d 3 | head -10 || echo "No directories found"`
-- Git status: !`git status --porcelain | head -5 || echo "Not a git repository"`
-- Recent commits: !`git log --oneline -5 2>/dev/null || echo "No git history"`
-- Current branch: !`git branch --show-current 2>/dev/null || echo "No git repository"`
+Use this command to identify technical debt issues across your codebase and get actionable recommendations for improvement:
 
-## Your task
+- Current directory: !`pwd`
+- Git status: !`git status --porcelain 2>/dev/null || echo "Not a git repository"`
+- Code files: !`fd -e go -e ts -e js -e py . | wc -l | tr -d ' '` found
+- Target: $ARGUMENTS (optional scope filter)
 
-**IMMEDIATELY DEPLOY 8 PARALLEL TECHNICAL DEBT ANALYSIS AGENTS** for ultra-fast comprehensive debt assessment: **$ARGUMENTS**
-
-Think deeply about comprehensive technical debt analysis while maximizing parallel execution for 8x speedup.
-
-**CRITICAL**: Launch ALL agents simultaneously in first response - NO sequential processing.
-
-## Parallel Technical Debt Analysis Framework
-
-STEP 1: **LAUNCH ALL 8 AGENTS SIMULTANEOUSLY**
-
-**NO SEQUENTIAL PROCESSING** - Deploy these specialized debt analysis agents in parallel:
-
-1. **Code Quality & Complexity Agent**: Cyclomatic complexity, large files, code smells, anti-patterns
-2. **Dependency Health & Security Agent**: Outdated dependencies, vulnerabilities, unused packages, license compliance
-3. **Performance Debt Agent**: Memory leaks, N+1 queries, sync operations, allocation bottlenecks
-4. **Test Coverage & Quality Agent**: Coverage analysis, flaky tests, missing assertions, test scenarios
-5. **Documentation Debt Agent**: API docs, README currency, comment debt, architectural documentation
-6. **Architecture Violations Agent**: Circular dependencies, coupling issues, design violations
-7. **Configuration & Environment Agent**: Config drift, environment inconsistencies, secret management
-8. **Automation & CI/CD Debt Agent**: Missing automation, pipeline gaps, deployment issues
-
-**Expected speedup**: 8x faster than sequential debt analysis.
-
-STEP 2: Initialize Parallel Session Management
-
-```json
-// /tmp/technical-debt-analysis-$SESSION_ID.json
-{
-  "sessionId": "$SESSION_ID",
-  "timestamp": "ISO_8601_TIMESTAMP",
-  "target": "$ARGUMENTS",
-  "phase": "parallel_analysis",
-  "technology_stack": "auto-detect",
-  "analysis_domains": [
-    "code_quality",
-    "dependencies",
-    "performance",
-    "testing",
-    "documentation",
-    "architecture",
-    "configuration",
-    "automation"
-  ],
-  "debt_findings": {},
-  "priority_matrix": {},
-  "remediation_roadmap": {}
-}
-```
-
-STEP 3: Parallel Debt Discovery & Analysis
-
-**ALL AGENTS WORK CONCURRENTLY:**
-
-**Technical Debt Discovery Execution:**
+## Usage
 
 ```bash
-# Code quality and complexity patterns
-rg "if|else|while|for|match|switch|case|catch|\?\?" --count-matches
-fd "\.(go|ts|js)$" . --exec wc -l {} \; | rg "^\s*[5-9][0-9]{2,}"
-
-# Dependency and security patterns
-fd "(go\.mod|package\.json)" . -d 2
-rg "password.*=|secret.*=|key.*=|token.*=" -n
-
-# Performance and architecture patterns
-rg "N\+1|blocking|sync|await|async" -n
-rg "TODO|FIXME|HACK|XXX" -n
+/code/analyze/technical-debt
+/code/analyze/technical-debt "src/components"
+/code/analyze/technical-debt --type=security
 ```
 
-TRY:
-Launch all 8 parallel agents for comprehensive debt analysis
-Execute concurrent discovery across all debt dimensions
-Synthesize findings from all agent results
-Apply priority scoring (High/Medium/Low) based on impact
-Generate quantified metrics and remediation roadmap
-Update session state: phase = "debt_analysis_complete"
+## Your Task
 
-CATCH (agent_failures):
-Continue with available agent results
-Document failed analysis areas
-Provide partial debt assessment with gaps identified
-Generate basic remediation roadmap
+**STEP 1: Discovery and Assessment**
 
-FINALLY:
-Aggregate all parallel agent findings
-Create comprehensive debt assessment matrix
-Generate structured remediation plan with effort estimates
-Save artifacts: debt-analysis.md, remediation-roadmap.md
-Clean up temporary analysis files
+Analyze the current directory and subdirectories for technical debt patterns:
 
-STEP 4: **Parallel Results Synthesis**
+- USE Glob to find all relevant source files
+- READ package.json, go.mod, or similar to understand dependencies
+- GREP for common technical debt indicators
+- ASSESS project structure and file organization
 
-WAIT for ALL 8 agents to complete debt analysis
-AGGREGATE findings from all parallel streams:
+**STEP 2: Code Quality Analysis**
 
-- Code quality metrics and complexity hotspots
-- Dependency vulnerabilities and outdated packages
-- Performance bottlenecks and inefficient patterns
-- Test coverage gaps and quality issues
-- Documentation debt and missing API docs
-- Architecture violations and circular dependencies
-- Configuration drift and environment inconsistencies
-- Automation gaps and CI/CD debt
+FOR EACH source file type in the project:
+- IDENTIFY large files and complex functions
+- SEARCH for code smells and anti-patterns
+- FIND TODO/FIXME/HACK comments
+- ANALYZE cyclomatic complexity indicators
 
-GENERATE structured remediation roadmap:
+**STEP 3: Dependency and Security Analysis**
 
-- Immediate actions (security vulnerabilities, critical issues)
-- Short-term actions (1-4 weeks: performance, quality improvements)
-- Long-term actions (1-3 months: architecture, documentation)
-- Automation opportunities (CI/CD, pre-commit hooks, monitoring)
+IF Go project detected:
+- CHECK for outdated dependencies: `go list -u -m all`
+- SCAN for security vulnerabilities
+- IDENTIFY unused packages
 
-CREATE debt priority matrix:
+ELSE IF Node.js project detected:
+- RUN `npm audit` for security issues
+- CHECK for outdated packages: `npm outdated`
+- IDENTIFY unused dependencies
 
-```json
-{
-  "immediate_actions": ["Critical security fixes", "Performance blockers"],
-  "short_term_actions": ["Code quality improvements", "Test coverage"],
-  "long_term_actions": ["Architecture refactoring", "Documentation"],
-  "automation_opportunities": ["Pre-commit hooks", "Dependency updates"],
-  "prevention_strategies": ["Quality gates", "Security scanning"]
-}
+ELSE:
+- ANALYZE based on detected project type
+- FOCUS on language-specific patterns
+
+**STEP 4: Performance and Testing Assessment**
+
+- IDENTIFY inefficient patterns and potential bottlenecks
+- CHECK test coverage and missing critical tests
+- FIND performance anti-patterns (N+1 queries, memory leaks)
+- ASSESS documentation quality and completeness
+
+**STEP 5: Generate Prioritized Remediation Plan**
+
+CREATE structured report with:
+- CATEGORIZE issues by priority (High/Medium/Low)
+- PROVIDE specific file paths and line numbers
+- ESTIMATE effort required for each fix
+- SUGGEST prevention strategies
+
+## Expected Output
+
+```markdown
+# Technical Debt Analysis Report
+
+## Executive Summary
+- Overall debt score: [Score/10]
+- Critical issues found: [Number]
+- Recommended immediate actions: [Top 3]
+
+## Priority Matrix
+
+### High Priority (Security & Critical Performance)
+1. **[Issue Type]** - [File:Line]
+   - Impact: [Description]
+   - Effort: [Small/Medium/Large]
+   - Action: [Specific steps]
+
+### Medium Priority (Code Quality & Testing)
+2. **[Issue Type]** - [File:Line]
+   - Impact: [Description]
+   - Effort: [Small/Medium/Large]
+   - Action: [Specific steps]
+
+### Low Priority (Documentation & Refactoring)
+3. **[Issue Type]** - [File:Line]
+   - Impact: [Description]
+   - Effort: [Small/Medium/Large]
+   - Action: [Specific steps]
+
+## Detailed Findings
+
+### Code Quality Issues
+- Large files (>500 lines): [List with line counts]
+- Complex functions: [List with complexity indicators]
+- Code smells: [Specific patterns found]
+
+### Security Vulnerabilities
+- Dependency vulnerabilities: [List with severity]
+- Code security issues: [Hardcoded secrets, etc.]
+
+### Performance Issues
+- Inefficient patterns: [Database queries, loops, etc.]
+- Memory allocation problems: [Specific cases]
+
+### Testing Gaps
+- Missing test coverage: [Critical areas]
+- Flaky test patterns: [Identified issues]
+
+## Remediation Plan
+
+### Week 1-2 (High Priority)
+1. [ ] Fix security vulnerabilities
+2. [ ] Address critical performance issues
+3. [ ] Implement missing critical tests
+
+### Week 3-4 (Medium Priority)
+1. [ ] Refactor large files
+2. [ ] Improve code quality
+3. [ ] Increase test coverage
+
+### Ongoing (Low Priority)
+1. [ ] Update documentation
+2. [ ] Code style improvements
+3. [ ] Dependency updates
+
+## Prevention Strategies
+- Pre-commit hooks for code quality
+- Automated security scanning
+- Regular dependency updates
+- Code review guidelines
 ```
 
-## Analysis Commands Reference
+## Analysis Commands
 
-### Modern Tool Usage Examples
-
-**File Discovery (using fd instead of find):**
-
+### Go Projects
 ```bash
-# Source files by language
-fd "\.(go|ts|js)$" src/
+# Large files
+fd "\.go$" . --exec wc -l {} \; | sort -rn | head -10
 
-# Large files identification
-fd "\.(go|ts|js)$" . --exec wc -l {} \; | rg "^\s*[5-9][0-9]{2,}" | head -20
-
-# Configuration files
-fd "(config|\.env|\.yml|\.yaml|\.toml|\.json)$" . -d 3
-```
-
-**Code Pattern Analysis (using rg instead of grep):**
-
-```bash
-# Complexity indicators
-rg "if|else|while|for|match|switch|case|catch|\?\?" --count-matches
-
-# Anti-patterns
+# Technical debt indicators
 rg "interface\{\}" --type go -n
+rg "TODO|FIXME|HACK" --type go -n
 
 # Security patterns
-rg "password.*=|secret.*=|key.*=|token.*=" -n
-rg "eval\(|exec\(|system\(" -n
+rg "password.*=|secret.*=" --type go -n
 ```
 
-**Dependency Analysis:**
-
+### TypeScript/JavaScript Projects
 ```bash
+# Complex files
+fd "\.ts$|\.js$" . --exec wc -l {} \; | sort -rn | head -10
 
-# Go
-go list -u -m all 2>/dev/null | rg "\[" || echo "Go modules not available"
-govulncheck ./... 2>/dev/null || echo "govulncheck not installed"
+# Security issues
+rg "password.*=|secret.*=" -n
+rg "eval\(|exec\(" -n
 
+# Code smells
+rg "any\s+=" --type typescript -n
 ```
 
-## State Management Schema
+## Examples
 
-```json
-{
-  "sessionId": "$SESSION_ID",
-  "timestamp": "ISO_8601_TIMESTAMP",
-  "target": "$ARGUMENTS",
-  "phase": "analysis_complete",
-  "technology_stack": {
-    "detected_languages": [],
-    "build_tools": [],
-    "frameworks": []
-  },
-  "analysis_results": {
-    "code_quality": {
-      "complexity_score": "number",
-      "large_files_count": "number",
-      "code_smells": []
-    },
-    "dependencies": {
-      "outdated_count": "number",
-      "vulnerabilities": [],
-      "unused_dependencies": []
-    },
-    "performance": {
-      "bottlenecks": [],
-      "inefficient_patterns": [],
-      "memory_issues": []
-    },
-    "testing": {
-      "coverage_percentage": "number",
-      "quality_issues": [],
-      "missing_tests": []
-    },
-    "documentation": {
-      "missing_docs": [],
-      "outdated_docs": [],
-      "comment_debt": []
-    },
-    "architecture": {
-      "circular_dependencies": [],
-      "coupling_issues": [],
-      "design_violations": []
-    }
-  },
-  "debt_priority_matrix": {
-    "high_priority": [],
-    "medium_priority": [],
-    "low_priority": []
-  },
-  "remediation_roadmap": {
-    "immediate_actions": [],
-    "short_term_actions": [],
-    "long_term_actions": []
-  },
-  "metrics": {
-    "total_debt_score": "number",
-    "trend_direction": "improving|stable|degrading",
-    "technical_debt_ratio": "percentage"
-  }
-}
-```
+### Example 1: Full Analysis
+`/code/analyze/technical-debt`
 
-### Expected Performance & Outcomes:
+Performs comprehensive technical debt analysis of entire codebase.
 
-**8x Performance Improvement:**
+### Example 2: Focused Analysis
+`/code/analyze/technical-debt "src/components"`
 
-- **Sequential time**: 40-50 seconds for comprehensive debt analysis
-- **Parallel time**: 5-7 seconds with 8 sub-agents
-- **Speedup**: 8x faster through aggressive parallelization
+Analyzes technical debt only in the components directory.
 
-**Comprehensive Technical Debt Assessment:**
-
-- Complete debt assessment across all dimensions
-- Prioritized remediation roadmap with effort estimates
-- Security vulnerability analysis with immediate action items
-- Dependency health report with update recommendations
-- Code quality metrics with improvement opportunities
-- Performance bottleneck identification with optimization strategies
-- Test coverage gaps with testing strategy recommendations
-- Documentation debt assessment with writing guidelines
-- Architecture violation analysis with refactoring suggestions
-- Automation setup guide for continuous debt monitoring
-
-**Parallel Architecture Benefits:**
-
-- **Token efficiency**: 45-55% reduction through specialized agent contexts
-- **Comprehensive coverage**: All debt dimensions analyzed simultaneously
-- **Consistent quality**: No trade-offs between speed and thoroughness
-- **Actionable results**: Immediate/short-term/long-term remediation plans
-
-## Automation Integration
-
-- Pre-commit hooks for code quality enforcement
-- CI pipeline checks for dependency security
-- Regular dependency update automation
-- Code quality gates for pull request approval
-- Security scanning in deployment pipelines
-- Technical debt tracking in project management tools
-
-The optimized technical debt analyzer delivers **instant comprehensive debt assessment** through high-performance parallel execution, transforming debt analysis from a time-consuming sequential process into a lightning-fast intelligent debt management system.
+**IMPORTANT**: Focus on actionable, prioritized recommendations with specific file paths and clear remediation steps.

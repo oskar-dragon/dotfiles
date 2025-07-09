@@ -1,5 +1,5 @@
 ---
-allowed-tools: Bash(git status:*), Bash(git diff:*), Bash(git add:*), Bash(git commit:*), Bash(git push:*), Bash(git branch:*), Bash(gh pr create:*), Bash(git log:*)
+allowed-tools: Bash(git:*), Bash(gh:*)
 description: Create commit, push, and open pull request
 ---
 
@@ -8,63 +8,58 @@ description: Create commit, push, and open pull request
 - Current git status: !`git status --porcelain`
 - Current branch: !`git branch --show-current`
 - Remote tracking: !`git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || echo "No upstream branch"`
-- Recent commits: !`git log --oneline -5`
 
 ## Your task
 
-PROCEDURE create_commit_push_pr():
-
 STEP 1: Analyze current state
 
+- Check git status to see staged/unstaged changes
 - IF no staged changes:
-  - Review unstaged changes: !`git diff --stat`
-  - Stage appropriate files: git add <files>
+  - Review unstaged changes with `git diff --stat`
+  - Stage appropriate files with `git add`
 - ELSE:
-  - Review staged changes: !`git diff --cached --stat`
+  - Review staged changes with `git diff --cached --stat`
 
 STEP 2: Create commit
 
 - IF $ARGUMENTS provided:
   - Use as commit message
 - ELSE:
-  - Analyze changes: !`git diff --cached`
-  - Generate conventional commit message
-- Execute: git commit -m "$(cat <<'EOF'
-  [Generated or provided message]
-  EOF
-  )"
+  - Analyze changes with `git diff --cached`
+  - Generate conventional commit message (feat:, fix:, docs:, etc.)
+- Create commit with proper message format
 
 STEP 3: Push to remote
 
-- Current branch: !`git branch --show-current`
+- Get current branch name
 - IF no upstream branch:
-  - Push with upstream: git push -u origin [branch-name]
+  - Push with upstream: `git push -u origin [branch-name]`
 - ELSE:
-  - Push normally: git push
+  - Push normally: `git push`
 
 STEP 4: Create pull request
 
-- Base branch: Determine from git config or default to main
 - Generate PR title from commit message
-- Create PR: gh pr create --title "[title]" --body "$(cat <<'EOF'
-
-## Summary
-
-[Brief description of changes]
-
-## Changes
-
-- [Key change 1]
-- [Key change 2]
-
-## Test Plan
-
-- [ ] Tests pass
-- [ ] Manual testing completed
-      EOF
-      )"
+- Create PR with `gh pr create`
+- Include basic PR template:
+  - Summary of changes
+  - Key modifications
+  - Test plan checklist
 
 STEP 5: Return result
 
-- Display PR URL
-- Provide next steps if needed
+- Display created PR URL
+- Confirm successful completion
+
+## Example Output
+
+```
+✅ Commit created: feat: add user authentication
+✅ Pushed to origin/feature-branch
+✅ Pull request created: https://github.com/user/repo/pull/123
+
+Next steps:
+- Review the PR
+- Request reviewers if needed
+- Merge when approved
+```

@@ -1,106 +1,76 @@
 ---
-allowed-tools: mcp__sequential-thinking__sequentialthinking, Write, Read, Bash(gdate:*)
-description: Engage in deep, structured reasoning using sequential thinking
+allowed-tools: [Write, Read, Bash]
+description: Engage in deep, structured reasoning using systematic thinking approaches
 ---
+
+# /think
+
+Engage in deep, structured reasoning using systematic thinking approaches for complex problems.
 
 ## Context
 
-- Session ID: !`gdate +%s%N`
+- Session ID: !`gdate +%s%N || date +%s%N`
 - Working directory: !`pwd`
-- Current time: !`gdate '+%Y-%m-%d %H:%M:%S'`
+- Current time: !`gdate '+%Y-%m-%d %H:%M:%S' || date '+%Y-%m-%d %H:%M:%S'`
+- Topic: $ARGUMENTS
+
+## Usage
+
+```
+/think [topic or question]
+```
 
 ## Your Task
 
-STEP 1: Initialize Thinking Session
+**STEP 1: Problem Assessment**
 
-- Create thinking state file: /tmp/think-session-$SESSION_ID.json
-- Initialize with topic: $ARGUMENTS
-- Set thinking depth based on complexity assessment
+Evaluate the complexity and scope of the topic:
 
-STEP 2: Adaptive Deep Thinking Strategy
+- IDENTIFY the core question or challenge
+- DETERMINE if it's straightforward or complex
+- ASSESS what type of thinking approach would be most effective
+- CONSIDER multiple perspectives and stakeholder viewpoints
 
-**FOR complex multi-dimensional problems requiring comprehensive analysis:**
+**STEP 2: Structured Analysis**
 
-**CRITICAL: Combine sequential thinking with parallel perspective analysis for maximum insight generation**
-
-EXECUTE hybrid approach:
-
-1. **Initial Sequential Thinking Phase**: Use sequential thinking tool for core problem exploration
-   - Start with 8-12 initial thoughts for comprehensive problem mapping
-   - Allow thinking to evolve organically - adjust total_thoughts as needed
-   - Question and revise previous thoughts when new insights emerge
-   - Generate multiple solution hypotheses and verify them systematically
-
-2. **Parallel Perspective Analysis**: Deploy specialized thinking agents for different analytical dimensions
-   - **Agent 1: First Principles Analysis**: Break down problem to fundamental components and build up solutions
-   - **Agent 2: Systems Thinking**: Analyze interconnections, feedback loops, and emergent properties
-   - **Agent 3: Stakeholder Analysis**: Examine multiple stakeholder viewpoints, incentives, and constraints
-   - **Agent 4: Temporal Analysis**: Investigate past trends, current state, and future implications
-   - **Agent 5: Risk & Scenario Analysis**: Explore potential failure modes, edge cases, and alternative scenarios
-
-3. **Integration & Synthesis**: Combine sequential insights with parallel perspectives for breakthrough understanding
-
-**Sub-Thinking Coordination:**
-
-- Sequential thinking provides deep logical progression and insight evolution
-- Parallel agents provide comprehensive perspective coverage and analytical rigor
-- Combined approach delivers both depth and breadth for complex problem solving
-- Results synthesized into actionable insights with multiple validation approaches
-
-**FOR straightforward problems requiring focused analysis:**
-
-Use enhanced sequential thinking approach:
-
-- Start with 5-8 initial thoughts for problem exploration
-- Allow thinking to evolve organically - adjust total_thoughts as needed
-- Question and revise previous thoughts when new insights emerge
-- Generate solution hypotheses and verify them
-- Continue until reaching satisfactory understanding
-
-Key thinking approaches to incorporate:
-
-- First principles analysis
-- Systems thinking (interconnections and emergent properties)
-- Contrarian perspectives and devil's advocate
-- Temporal analysis (past trends, future implications)
-- Stakeholder viewpoints and incentives
-- Analogical reasoning from other domains
-
-STEP 3: Synthesize Insights
-
-FOR EACH major insight discovered:
-
-- Document the breakthrough realization
-- Explain why it's significant
-- Identify implications and next steps
-
-STEP 4: Create Actionable Output
-
-Generate structured output including:
-
-- Key insights and novel perspectives
-- Critical factors and leverage points
-- Practical recommendations
-- Open questions requiring further exploration
-
-## Thinking Depth Guidelines
+Apply systematic thinking approaches:
 
 IF topic is straightforward:
-
-- Use standard thinking mode (5-8 thoughts)
+- USE focused analytical approach
+- APPLY first principles reasoning
+- CONSIDER 3-5 key dimensions
+- GENERATE clear conclusions
 
 ELSE IF topic involves complex systems or decisions:
+- USE comprehensive analytical framework
+- EXAMINE interconnections and dependencies
+- CONSIDER temporal aspects (past trends, future implications)
+- ANALYZE trade-offs and constraints
+- EXPLORE alternative scenarios
 
-- Use extended thinking with revision cycles
-- Allow 10-15+ thoughts with backtracking
+**STEP 3: Multi-Perspective Analysis**
 
-ELSE IF topic requires breakthrough insights:
+FOR EACH major dimension of the problem:
+- ANALYZE from different stakeholder viewpoints
+- CONSIDER potential risks and failure modes
+- EXAMINE historical patterns and analogies
+- IDENTIFY leverage points and critical factors
 
-- Use maximum thinking depth
-- Encourage branching and alternative paths
-- Continue until novel connections emerge
+**STEP 4: Synthesis and Insights**
 
-## Output Structure
+- INTEGRATE findings from different analytical approaches
+- IDENTIFY novel connections and breakthrough insights
+- HIGHLIGHT key trade-offs and tensions
+- DISTILL actionable recommendations
+
+**STEP 5: Validation and Next Steps**
+
+- QUESTION assumptions and verify logic
+- IDENTIFY areas requiring further exploration
+- SUGGEST experiments or information to gather
+- PROVIDE clear next steps
+
+## Expected Output
 
 ```markdown
 # Deep Analysis: [Topic]
@@ -124,13 +94,11 @@ ELSE IF topic requires breakthrough insights:
 ## Recommendations
 
 ### Immediate Actions
-
 1. [Next steps to take]
 2. [Experiments to run]
 3. [Information to gather]
 
 ### Strategic Implications
-
 - [How this changes approach]
 - [New opportunities to pursue]
 - [Risks to monitor]
@@ -142,11 +110,40 @@ ELSE IF topic requires breakthrough insights:
 - [Scenarios to consider]
 ```
 
-## Integration with Workflow
+## Thinking Frameworks
 
-- Combine with `/investigate` for evidence-based input
-- Follow with `/plan` to organize implementation
-- Use `/deep-dive` for specific aspects needing more exploration
-- Apply insights in `/options` for decision-making
+Apply these systematic approaches based on the problem type:
 
-The goal is breakthrough understanding through rigorous, multi-perspective analysis that leads to better decisions and creative solutions.
+**First Principles Analysis:**
+- Break down to fundamental components
+- Question basic assumptions
+- Build up solutions from foundations
+
+**Systems Thinking:**
+- Examine interconnections and feedback loops
+- Consider emergent properties
+- Map system boundaries and influences
+
+**Temporal Analysis:**
+- Analyze historical patterns and trends
+- Consider current state and dynamics
+- Project future implications and scenarios
+
+**Stakeholder Analysis:**
+- Identify all affected parties
+- Understand different viewpoints and incentives
+- Consider constraints and requirements
+
+## Examples
+
+### Example 1: Strategic Decision
+`/think "Should we adopt microservices architecture for our monolithic application?"`
+
+Analysis would examine technical, organizational, and business factors, consider migration complexity, and provide structured recommendations.
+
+### Example 2: Complex Problem
+`/think "How can we improve team productivity while maintaining code quality?"`
+
+Analysis would explore trade-offs, examine different approaches, and synthesize actionable strategies.
+
+**IMPORTANT**: Focus on rigorous, systematic analysis that leads to actionable insights and better decision-making.

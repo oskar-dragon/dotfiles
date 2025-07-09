@@ -1,192 +1,183 @@
 ---
-allowed-tools: Read, Write, Bash(mkdir:*), Bash(fd:*), Bash(ls:*), Bash(git:*), Bash(gdate:*)
-description: Interactive generator for project-level slash commands with best practices validation
+allowed-tools: Read, Write, Bash(mkdir:*), Bash(fd:*), Bash(ls:*), Bash(git:*), Bash(gdate:*), Bash(eza:*)
+description: Interactive generator for Claude slash commands with best practices validation and namespace organization.
 ---
+
+# /generate-command
+
+Interactively generate new Claude slash commands, ensuring best practices, proper namespace organization, and dynamic context integration.
 
 ## Context
 
 - Session ID: !`gdate +%s%N`
 - Current directory: !`pwd`
 - Existing .claude directory: !`ls -la .claude 2>/dev/null || echo "No .claude directory found"`
-- Current command structure: !`fd "\.md$" .claude/commands 2>/dev/null | head -5 || echo "No existing commands"`
+- Claude commands directory: !`eza -la claude/commands 2>/dev/null | head -10 || echo "Not in dotfiles directory"`
 - Git status: !`git status --porcelain 2>/dev/null | head -3 || echo "Not a git repository"`
-- Project type indicators: !`fd "(package\.json|Cargo\.toml|go\.mod|pom\.xml)" . -d 2 | head -3`
 
 ## Your Task
 
-STEP 1: Initialize command generation session and analyze project context
+STEP 1: Initialize Command Generation Session
 
-- CREATE session state file: `/tmp/generate-command-state-$SESSION_ID.json`
-- ANALYZE existing .claude/commands structure from Context
-- IDENTIFY project patterns and common workflows
-- DETERMINE recommended command categories based on project type
+- ANALYZE existing command structure and project patterns
+- IDENTIFY command namespace requirements
 
-STEP 2: Interactive command specification gathering
+STEP 2: Interactive Command Specification Gathering
 
-TRY:
+- PROMPT user for:
+  - **Command Purpose**: What specific task should this command automate?
+  - **Command Name**: Kebab-case, descriptive, follows namespace conventions.
+  - **Parameters Needed**: None, single (`$ARGUMENTS`), or multiple structured inputs.
+  - **Command Type**: Simple utility, Code analysis, Web research, File operations, Git workflow.
+  - **Namespace Selection**: Existing or new namespace (e.g., `analyze/`, `code/`, `git/`).
+  - **Dynamic Context Requirements**: Real-time information needed (e.g., file system, Git state).
+  - **Tools Required**: Read, Write, Edit, Bash commands, WebFetch, WebSearch, Task.
 
-- PROMPT user for command requirements using intelligent project-based suggestions:
+STEP 3: Generate Command File with Best Practices Validation
 
-**Command Specification Questions:**
+- GENERATE command structure using the embedded template below:
+  - **Simple utility**: Basic structure with dynamic context (50-80 lines)
+  - **Code analysis**: File reading, pattern matching, reporting (80-120 lines)
+  - **Web research**: WebSearch/WebFetch with structured output (100-150 lines)
+  - **File operations**: Read/Write/Edit with validation (60-100 lines)
+  - **Git workflow**: Git commands with status checking (70-120 lines)
+- VALIDATE against style guide checklist:
+  - [ ] Command is 50-150 lines maximum
+  - [ ] No fictional performance claims or parallel processing
+  - [ ] Uses only real Claude Code tools
+  - [ ] Clear, actionable steps with STEP-based structure
+  - [ ] Practical examples included
+  - [ ] Front matter completeness and minimal `allowed-tools`
+  - [ ] Safe and tested Bash commands
+  - [ ] Adherence to namespace conventions
 
-1. **Command Purpose**: What specific task should this command automate?
+STEP 4: Create Command Directory Structure and File
 
-   Examples based on detected project type:
-   - Typescript projects: "test-single", "build-deploy", "format-check"
-   - Go projects: "generate-mocks", "run-integration-tests", "profile-memory"
-   - Multi-language: "sync-dependencies", "security-scan", "generate-docs", "docker-build"
+- ENSURE `.claude/commands` (for project-level) or `claude/commands` (for global) directory exists.
+- CREATE namespace directory if needed.
+- WRITE command file to the determined path.
+- CHECK for existing command and PROMPT for overwrite confirmation.
 
-2. **Command Name**: What should the slash command be called?
-   - Must be kebab-case (e.g., "audit-security", "fix-issue")
-   - Will be accessible as `/project:command-name`
+STEP 5: Write and Validate Generated Command
 
-3. **Parameters Needed**: Does the command need user input?
-   - None: Simple execution commands
-   - Single: Use `$ARGUMENTS` token
-   - Multiple: Design structured input pattern
-
-4. **Command Complexity Level**:
-   - **Simple**: Single-step operation, no state management
-   - **Interactive**: Requires user confirmation or multi-phase execution
-   - **Complex**: Needs state management, error handling, resumability
-   - **Analysis**: Benefits from extended thinking or sub-agents
-
-5. **Tools Required**: What operations will the command perform?
-   - File operations: Read, Write, Edit, MultiEdit
-   - Shell commands: Bash with specific tool restrictions
-   - External APIs: WebFetch, WebSearch
-   - Sub-processes: Task (for sub-agent delegation)
-
-CATCH (user_input_incomplete):
-
-- SAVE partial input to session state
-- PROVIDE examples and suggestions
-- CONTINUE gathering missing information
-
-STEP 3: Generate command file with best practices validation
-
-**Command Generation Process:**
-
-IF command_complexity == "simple":
-
-- GENERATE basic command structure:
-
-  ```yaml
-  ---
-  allowed-tools: [detected_tools]
-  description: [user_provided_purpose]
-  ---
-
-  ## Context
-
-  - Session ID: !`gdate +%s%N`
-  [context_commands_based_on_purpose]
-
-  ## Your task
-
-  [user_specified_task_converted_to_steps]
-  ```
-
-IF command_complexity == "interactive":
-
-- GENERATE command with checkpoint pattern:
-  - Session state management
-  - User confirmation points
-  - Resume capability
-
-IF command_complexity == "complex":
-
-- GENERATE command with full state management:
-  - `/tmp/command-state-$SESSION_ID.json` pattern
-  - TRY/CATCH blocks for error handling
-  - STEP-based execution with validation
-
-IF command_complexity == "analysis":
-
-- INCLUDE extended thinking recommendations:
-  - "think hard" prompts for complex decisions
-  - Sub-agent delegation patterns for parallel research
-  - Token-efficient context management
-
-**Best Practices Validation:**
-
-FOR EACH generated command:
-
-- VALIDATE front matter completeness
-- ENSURE session ID in Context section
-- VERIFY all bash commands are safe and tested
-- CHECK programmatic structure (STEP/IF/FOR patterns)
-- CONFIRM error handling for risky operations
-- TEST command follows gold standard (/commit pattern)
-
-STEP 4: Create command directory structure and file
-
-```bash
-# Ensure .claude/commands directory exists
-IF [ ! -d ".claude/commands" ]; then
-  mkdir -p .claude/commands
-  echo "Created .claude/commands directory"
-fi
-
-# Determine command file path
-command_file=".claude/commands/${command_name}.md"
-
-# Check for existing command
-IF [ -f "$command_file" ]; then
-  echo "⚠️ Command $command_name already exists"
-  PROMPT user for overwrite confirmation
-fi
-```
-
-STEP 5: Write and validate generated command
-
-- WRITE command file to determined path
 - VALIDATE generated command syntax
-- TEST all bash commands in Context section for compatibility
-- VERIFY command follows established patterns
+- TEST all Bash commands in `Context` section for compatibility
+- **VERIFY command follows style guide**:
+  - No session state files or complex state management
+  - No parallel processing or coordination systems
+  - Uses only real Claude Code tools and capabilities
+  - Clear, actionable steps without fictional elements
 
-STEP 6: Commit new command to version control
+STEP 6: Provide Usage Instructions and Next Steps
 
-IF git repository detected:
-
-```bash
-# Stage the new command
-git add .claude/commands/${command_name}.md
-
-# Create descriptive commit message
-git commit -m "feat: add /project:${command_name} command
-
-Adds interactive command for ${command_purpose}.
-Includes proper front matter, dynamic context, and error handling."
-
-echo "✅ Command committed to version control"
-```
-
-STEP 7: Provide usage instructions and next steps
-
-- DISPLAY command usage: `/project:${command_name}`
+- DISPLAY command usage (e.g., `/project:command-name` or `/command-name`)
 - SHOW command file location for editing
 - SUGGEST testing the command before team distribution
 - RECOMMEND documenting the command in project README if applicable
+- PROVIDE maintenance guidelines for future command updates
 
-FINALLY:
+## Command Generation Principles
 
-- CLEAN UP session state file
-- REPORT successful command generation
-- PROVIDE command testing instructions
+### Generate Commands That Include:
 
-**Example Command Patterns by Type:**
+- **50-150 lines maximum** - Focused, lean functionality
+- **Real Claude Code tools only** - Read, Write, Edit, Bash, Grep, WebFetch, WebSearch, Task
+- **Clear, actionable steps** - STEP-based structure with specific instructions
+- **Practical examples** - Actual usage scenarios
+- **Dynamic context** - Real bash commands for context gathering
 
-1. **Git/GitHub Operations**: Follow `/commit` gold standard pattern
-2. **Code Analysis**: Include sub-agent delegation for large codebases
-3. **Build/Deploy**: Add state management for multi-step processes
-4. **Testing**: Include parallel execution for performance
-5. **Documentation**: Use extended thinking for comprehensive coverage
+### Never Generate Commands With:
 
-**Advanced Features to Consider:**
+- **Fictional performance claims** - "10x faster", "parallel processing"
+- **Session state files** - /tmp/ files, checkpoints, resumability
+- **Parallel sub-agents** - Non-existent coordination systems
+- **Complex state management** - Elaborate TRY/CATCH patterns for simple tasks
+- **Pseudo-technical features** - Capabilities that don't exist in Claude Code
 
-- **Sub-Agent Integration**: For complex analysis or parallel research tasks
-- **Extended Thinking**: For architectural decisions or deep analysis
-- **State Management**: For resumable workflows and error recovery
-- **Dynamic Context**: For real-time project state awareness
-- **Security Validation**: Ensure minimal tool permissions and safe operations
+### Template Structure
+
+All generated commands follow the template in `/commands/STYLE_GUIDE.md`:
+
+- YAML front matter with minimal allowed-tools
+- Clear context with dynamic bash commands
+- Step-based task structure
+- Expected output format
+- Practical examples
+- Important usage notes
+
+#### Example
+
+```markdown
+---
+allowed-tools: [List only tools that will actually be used]
+description: Brief, clear description of what this command does
+---
+
+# /command-name
+
+One-sentence description of the command's purpose.
+
+## Context
+
+Brief context about when to use this command:
+
+- Key variable: $ARGUMENTS
+- Current directory: !`pwd`
+- [Other relevant context using actual bash commands]
+
+## Usage
+```
+
+/command-name [arguments]
+/command-name [arguments] --flag # Optional flags if needed
+
+```
+
+## Your Task
+
+**Step 1: [Clear Action]**
+
+Describe what Claude should do in clear, actionable terms:
+- Use bullet points for specific actions
+- Reference actual tools and commands
+- Avoid complex pseudo-code
+
+**Step 2: [Next Action]**
+
+Continue with logical progression:
+- Keep steps simple and focused
+- Use real package manager commands when applicable
+- Reference actual file operations
+
+**Step 3: [Final Action]**
+
+Complete the workflow:
+- Generate clear output
+- Provide actionable recommendations
+- Focus on practical next steps
+
+## Expected Output
+
+Describe what the command will produce:
+- Specific format (markdown, JSON, etc.)
+- Key sections and content
+- Actionable recommendations
+
+## Examples
+
+### Example 1: [Use Case]
+`/command-name "specific example"`
+
+Explanation of what this would do and expected outcome.
+
+### Example 2: [Another Use Case]
+`/command-name "different example"`
+
+Explanation of different scenario and result.
+
+**IMPORTANT**: [Any critical notes about usage or limitations]
+```
+
+## Reference
+
+See `/commands/STYLE_GUIDE.md` for complete guidelines and validation checklist.

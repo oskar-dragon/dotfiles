@@ -6,7 +6,6 @@
       "Edit(node_modules/**)",
       "Read(.env.*)",
       "Read(*.key)",
-      "Bash(rm -rf *)",
       "Bash(sudo *)",
       "Edit(.env)",
       "Edit(.env.*)",

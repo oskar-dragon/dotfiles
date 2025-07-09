@@ -1,25 +1,22 @@
 ---
-allowed-tools: Read, Write, Bash(test:*), Bash(eza:*), Bash(fd:*)
-description: Generate optimized Zed task configuration with intelligent defaults
+allowed-tools: Read, Write, Bash(test:*), Bash(fd:*)
+description: Generate Zed task configuration with intelligent defaults
 ---
 
 ## Context
 
-- Session ID: !`gdate +%s%N`
 - Task description: $ARGUMENTS
-- Current directory structure: !`eza -la --tree --level=2 | head -20`
 - Existing .zed directory: !`test -d .zed && echo "exists" || echo "not found"`
 - Current tasks file: !`test -f .zed/tasks.json && echo "found" || echo "not found"`
-- Project type detection: !`fd -t f "(package.json|go.mod)" -d 1 | head -5`
-- State file: /tmp/zed-task-state-!`gdate +%s%N`.json
+- Project type: !`fd -t f "(package.json|go.mod)" -d 1 | head -3`
 
 ## Your task
 
-STEP 1: Initialize session state
+STEP 1: Parse task description
 
-- Load or create session state file
-- Parse task description from $ARGUMENTS
+- Extract task requirements from $ARGUMENTS
 - Determine project type and appropriate defaults
+- Identify task category (test, build, dev, format, etc.)
 
 STEP 2: Analyze existing Zed configuration
 
@@ -31,37 +28,21 @@ STEP 2: Analyze existing Zed configuration
 - ELSE:
   - Prepare to create new tasks.json
 
-STEP 3: Generate intelligent task configuration
+STEP 3: Generate task configuration
 
-- Parse task description to extract:
-  - Task label (descriptive name)
-  - Command to execute
-  - Working directory (default: $ZED_WORKTREE_ROOT)
-  - Terminal requirements
-  - Concurrency settings
+- Create task object with:
+  - Descriptive label
+  - Appropriate command
+  - Working directory ($ZED_WORKTREE_ROOT)
+  - Terminal and concurrency settings
   - Reveal behavior
-
-- FOR EACH common task type:
-  - Test runners: Use file-specific patterns ($ZED_FILE)
-  - Build commands: Project root with appropriate builders
-  - Linters/formatters: File-specific with watch mode
-  - Development servers: New terminal with auto-reveal
-  - Script runners: Inherit project environment
-
-STEP 4: Optimize task configuration
-
-- Use modern command alternatives:
-  - ripgrep (rg) instead of grep
-  - fd instead of find
-  - eza instead of ls
-  - bat instead of cat
 
 - Apply Zed variable best practices:
   - $ZED_WORKTREE_ROOT for project operations
   - $ZED_FILE for file-specific tasks
   - $ZED_COLUMN/$ZED_ROW for cursor-aware operations
 
-STEP 5: Create or update tasks.json
+STEP 4: Create or update tasks.json
 
 - IF .zed/tasks.json doesn't exist:
   - Create .zed directory
@@ -71,38 +52,15 @@ STEP 5: Create or update tasks.json
   - Preserve existing tasks
   - Maintain JSON formatting
 
-STEP 6: Provide usage instructions
+STEP 5: Provide usage instructions
 
 - Show task configuration in formatted JSON
 - Explain Zed keyboard shortcuts:
   - `cmd-shift-p` → `task: spawn`
   - `task: rerun` for last task
-- Suggest keybinding creation for frequent tasks
 - Document Zed variable usage
 
-STEP 7: Save session state
-
-- Record generated task configuration
-- Update state file with completion status
-- Clean up temporary files
-
-## Example Output Format
-
-```json
-{
-  "label": "Run tests",
-  "command": "bun test",
-  "cwd": "$ZED_WORKTREE_ROOT",
-  "use_new_terminal": false,
-  "allow_concurrent_runs": false,
-  "reveal": "always",
-  "env": {
-    "NODE_ENV": "test"
-  }
-}
-```
-
-## Task Type Templates
+## Task Templates
 
 **Test Runner:**
 
@@ -142,3 +100,19 @@ STEP 7: Save session state
   "reveal": "never"
 }
 ```
+
+## Zed Variables
+
+- `$ZED_WORKTREE_ROOT`: Project root directory
+- `$ZED_FILE`: Currently selected file
+- `$ZED_COLUMN`: Current cursor column
+- `$ZED_ROW`: Current cursor row
+
+## Usage
+
+After task creation:
+
+1. Use `cmd-shift-p` and search for "task: spawn"
+2. Select your task from the list
+3. Use "task: rerun" to repeat the last task
+4. Consider creating keybindings for frequently used tasks
