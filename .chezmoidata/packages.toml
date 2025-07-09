@@ -8,6 +8,7 @@ to_remove = [
     "zsh-autosuggestions",
     "zsh-autocomplete",
     "duti",
+    "github",
 ]
 [packages.homebrew.common]
 taps = ["oven-sh/bun"]
@@ -42,6 +43,12 @@ formulae = [
     "ripgrep",       # Fancier GREP
     "powerlevel10k", # Powerlevel10k theme for Zsh
     "fd",            # File finder
+    "git-delta",     # Git diff viewer
+    "yq",            # YAML processor
+    "jq",            # JSON processor
+    "eza",           # Fast ls replacement
+    "bat",           # Fast cat replacement
+    "coreutils",     # GNU File, Shell, and Text utilities
 
     # Typescript Tools
     "nvm", # Node Version Manager
@@ -75,7 +82,7 @@ packages = [
     "@anthropic-ai/claude-code", # Claude Code CLI
 ]
 [packages.npm.work_computer]
-packages = []
+packages = ["turbo"]
 [packages.npm.personal_computer]
 packages = []
 

@@ -1,174 +1,220 @@
 ---
-description: Discover and propose new Claude command opportunities based on workflow analysis and technology trends
+allowed-tools: Read, Bash(fd:*), Bash(rg:*), Bash(eza:*), Bash(jq:*), Bash(yq:*), Bash(gdate:*), Task
+description: Generate intelligent project-specific slash command ideas through codebase analysis
 ---
 
-Discover and propose new Claude command opportunities based on systematic analysis of existing commands, developer workflow gaps, and emerging technology trends.
+## Context
 
-## Usage
+- Session ID: !`gdate +%s%N`
+- Current directory: !`pwd`
+- Target project context: $ARGUMENTS
+- Project structure: !`fd . -t d -d 2 | head -10 || echo "No subdirectories found"`
+- Technology indicators: !`fd "(package\.json|go\.mod|deno\.json|pom\.xml|build\.gradle)" . -d 3 | head -5 || echo "No build files detected"`
+- Existing scripts/tasks: !`fd "(scripts|tasks|bin)" . -t d -d 2 | head -3 || echo "No script directories found"`
+- Configuration files: !`fd "\.(env|config|yml|yaml|toml|json)" . -d 2 | rg -v node_modules | head -8 || echo "No config files found"`
+- Documentation: !`fd "(README|CONTRIBUTING|CHANGELOG|DOCS)" . -t f -d 2 | head -5 || echo "No documentation found"`
+- Existing Claude commands: !`fd "\.md$" .claude/commands 2>/dev/null | wc -l | tr -d ' ' || echo "0"` custom commands
 
+## Your Task
+
+STEP 1: Initialize intelligent command ideation session
+
+- CREATE session state file: `/tmp/ideate-commands-$SESSION_ID.json`
+- ANALYZE project context from dynamic discovery above
+- DETERMINE project complexity and technology stack
+- IDENTIFY automation opportunities and workflow pain points
+
+STEP 2: Comprehensive project analysis with technology-specific insights
+
+TRY:
+
+- DETECT primary programming languages and frameworks
+- ANALYZE build systems and dependency management patterns
+- SCAN FOR common development workflows and scripts
+- IDENTIFY testing strategies and quality assurance patterns
+- EXAMINE deployment and operations configurations
+- EVALUATE team collaboration and documentation practices
+
+**Technology Stack Analysis:**
+
+```bash
+# Modern CLI-based project discovery
+echo "Analyzing project with modern tools..."
+
+# Language detection using fd and rg
+lang_indicators=$(fd "\.(go|ts|js)$" . -d 3 | head -20)
+echo "Source files: $lang_indicators"
+
+# Framework detection
+framework_files=$(fd "(go\.mod|package\.json)" . -d 2)
+echo "Framework files: $framework_files"
+
+# Infrastructure and operations
+infra_files=$(fd "(Dockerfile|docker-compose|terraform|\.tf)" . -d 3)
+echo "Infrastructure: $infra_files"
+
+# CI/CD detection
+ci_patterns=$(fd "(\.github)" . -t d -d 2)
+echo "CI/CD: $ci_patterns"
 ```
-/ideate-new [focus-area]
+
+STEP 3: Pattern recognition and workflow identification
+
+CASE project_complexity:
+
+WHEN "simple_single_technology":
+
+- GENERATE 3-5 focused command suggestions
+- EMPHASIZE development lifecycle automation
+- FOCUS on build, test, and deployment workflows
+
+WHEN "complex_multi_technology":
+
+- LAUNCH parallel sub-agents for comprehensive analysis
+- DELEGATE different technology aspects to specialized agents
+- SYNTHESIZE findings for holistic command suggestions
+
+**Sub-Agent Delegation for Complex Projects:**
+
+IF project has multiple technologies OR extensive infrastructure:
+
+LAUNCH parallel sub-agents to analyze different aspects:
+
+- **Agent 1: Development Workflows**: Analyze build systems, testing patterns, and development lifecycle
+- **Agent 2: Operations & Infrastructure**: Examine deployment, monitoring, and infrastructure management
+- **Agent 3: Code Quality & Security**: Study linting, security scanning, and compliance requirements
+- **Agent 4: Team Collaboration**: Review documentation, onboarding, and knowledge sharing practices
+- **Agent 5: Performance & Optimization**: Identify performance testing, profiling, and optimization opportunities
+
+Each agent provides specialized command suggestions for their domain.
+
+STEP 4: Generate targeted command suggestions with implementation details
+
+FOR EACH identified workflow pattern:
+
+**Command Suggestion Format:**
+
+```json
+{
+  "command_name": "/project:suggested-command",
+  "category": "development|operations|quality|team|security",
+  "priority": "high|medium|low",
+  "frequency": "daily|weekly|monthly|adhoc",
+  "time_saved": "estimated minutes per use",
+  "purpose": "One-line description",
+  "key_actions": [
+    "Primary action with specific tools",
+    "Secondary validation or reporting step",
+    "Optional cleanup or follow-up action"
+  ],
+  "parameters": {
+    "required": "$ARGUMENTS usage description",
+    "optional": "Additional parameter options"
+  },
+  "implementation_complexity": "simple|moderate|complex",
+  "dependencies": ["required tools or configurations"],
+  "example_usage": "/project:command-name [arguments]",
+  "estimated_benefit": "Quantified impact description"
+}
 ```
 
-## Parameters
+**Technology-Specific Command Categories:**
 
-- `focus-area` (optional) - Specific area to analyze: `ai-ml`, `frontend`, `cloud`, `mobile`, `database`, `security`, `emerging`
-- If no focus area specified, performs comprehensive analysis across all categories
+Go Projects:
 
-## Process
+- `/project:go-mod-vulnerability` - Module security scanning
+- `/project:go-test-coverage-report` - Comprehensive coverage analysis
+- `/project:go-race-detection` - Concurrent code validation
+- `/project:go-build-optimization` - Build performance analysis
 
-### Phase 1: Current State Analysis
+TypeScript Projects:
 
-**Command Ecosystem Inventory**
+- `/project:ts-deps-graph` - Dependency visualization
+- `/project:ts-bundle-analysis` - Bundle size optimization
+- `/project:ts-permissions-audit` - Security permissions review
+- `/project:ts-performance-profile` - Runtime performance analysis
 
-1. **Count and categorize existing commands**:
-   - List all commands in `claude/commands/` directory
-   - Group by workflow stage (planning, development, testing, deployment, etc.)
-   - Identify coverage gaps and underrepresented categories
+Multi-Service/Container Projects:
 
-2. **Pattern recognition**:
-   - Analyze naming conventions (action-based, hyphenated, prefixed)
-   - Review command complexity and argument patterns
-   - Note successful command structures for replication
+- `/project:docker-compose-health` - Service health monitoring
+- `/project:container-security-scan` - Image vulnerability analysis
+- `/project:service-dependency-map` - Inter-service dependency visualization
+- `/project:logs-aggregation-analyze` - Distributed logging analysis
 
-3. **Usage gap identification**:
-   - Map developer workflow stages to command availability
-   - Identify single-command categories that could expand
-   - Note areas with high manual effort but no automation
+STEP 5: Prioritization and impact analysis
 
-### Phase 2: Market Research & Pain Point Analysis
+**Impact Assessment Matrix:**
 
-**Developer Workflow Trends**
+FOR EACH suggested command:
 
-1. **Technology evolution tracking**:
-   - Survey latest framework migrations and tool adoptions
-   - Research emerging development practices and patterns
-   - Identify automation opportunities in manual processes
+- CALCULATE time savings potential (frequency × time per execution)
+- EVALUATE error reduction impact (automation vs manual process)
+- ASSESS team standardization benefits
+- CONSIDER onboarding and knowledge transfer value
+- ESTIMATE implementation effort and maintenance cost
 
-2. **Pain point validation**:
-   - Common developer complaints and friction points
-   - Repeated tasks that could benefit from automation
-   - Complex workflows that need systematic approaches
+**Prioritization Criteria:**
 
-3. **Industry trend analysis**:
-   - Cloud-native development complexity
-   - AI/ML integration requirements
-   - Mobile development automation gaps
-   - Security and compliance automation needs
+1. **High Priority**: Daily use, high time savings, error-prone manual process
+2. **Medium Priority**: Weekly use, moderate complexity, team standardization benefits
+3. **Low Priority**: Occasional use, specialized scenarios, nice-to-have automation
 
-### Phase 3: Opportunity Identification
+STEP 6: Format comprehensive recommendations with implementation guidance
 
-**Command Gap Analysis**
+**Output Structure:**
 
-1. **High-impact opportunities**:
-   - Pain points affecting 50%+ of developers
-   - Manual processes with clear automation potential
-   - Complex workflows needing systematic guidance
+```markdown
+# Project-Specific Slash Command Recommendations
 
-2. **Strategic opportunities**:
-   - Emerging technology adoption support
-   - Enterprise workflow automation
-   - Developer productivity enhancement
+## Executive Summary
 
-3. **Future-focused opportunities**:
-   - Next-generation technology preparation
-   - Experimental workflow automation
-   - Niche but valuable use cases
+- Total commands suggested: X
+- Estimated weekly time savings: Y hours
+- Implementation priority breakdown: High (X), Medium (Y), Low (Z)
 
-### Phase 4: Command Design & Prioritization
+## High Priority Commands (Implement First)
 
-**Design Principles**
+[Detailed command specifications]
 
-1. **Simple usage patterns**:
-   - `/command [optional-context]` format
-   - Auto-detection of project context when possible
-   - Interactive fallback for guided assistance
+## Medium Priority Commands (Second Phase)
 
-2. **Contextual intelligence**:
-   - Read project structure (package.json, Cargo.toml, etc.)
-   - Detect frameworks and tools in use
-   - Provide relevant suggestions based on environment
+[Detailed command specifications]
 
-3. **Smart defaults**:
-   - Work without arguments for common cases
-   - Progressive enhancement with optional specificity
-   - Fail gracefully with helpful guidance
+## Low Priority Commands (Future Consideration)
 
-**Prioritization Framework**
+[Detailed command specifications]
 
-**Tier 1 (Immediate Value)**
+## Implementation Roadmap
 
-- Addresses widespread pain points
-- Clear ROI for developer productivity
-- Fits existing command ecosystem
+1. Phase 1 (Week 1-2): High priority commands
+2. Phase 2 (Week 3-4): Medium priority commands
+3. Phase 3 (Ongoing): Low priority and specialized commands
 
-**Tier 2 (Strategic Value)**
+## Success Metrics
 
-- Supports emerging technology adoption
-- Fills enterprise workflow gaps
-- Enhances command synergy
+- Time saved per week
+- Error reduction percentage
+- Team adoption rate
+- Developer satisfaction improvement
+```
 
-**Tier 3 (Future Value)**
+STEP 7: Extended thinking for complex analysis scenarios
 
-- Experimental/emerging technologies
-- Foundation for future command development
-- Niche but valuable capabilities
+IF project complexity is high OR requires architectural decisions:
 
-### Phase 5: Research Output
+- USE extended thinking to deeply analyze workflow optimization opportunities
+- CONSIDER "think hard" for comprehensive automation strategy
+- EVALUATE "think harder" for complex multi-service coordination patterns
 
-**Command Proposals**
+STEP 8: Save session results and provide refinement capabilities
 
-For each proposed command:
+- SAVE complete analysis to session state file
+- INCLUDE prioritized command suggestions with implementation details
+- PROVIDE refinement prompts for iterative improvement
+- ENABLE follow-up analysis for specific command categories
 
-1. **Name and usage**: Simple, consistent naming following existing patterns
-2. **Gap description**: What current need is unmet
-3. **Value proposition**: How it improves developer workflow
-4. **Context awareness**: How it detects and adapts to project environment
-5. **Tier classification**: Priority level and implementation timeline
+FINALLY:
 
-**Implementation Roadmap**
-
-- Phase 1: High-impact commands addressing major pain points
-- Phase 2: Strategic commands for emerging technologies
-- Phase 3: Future-focused and experimental commands
-
-## Key Research Areas
-
-### AI/ML Workflows
-
-- MLOps pipeline setup and management
-- Model deployment and versioning
-- Data pipeline automation
-- Experiment tracking integration
-
-### Frontend Development
-
-- Build tool migration automation
-- Performance optimization workflows
-- Framework-specific scaffolding gaps
-
-### Database Operations
-
-- Zero-downtime migration strategies
-- Performance optimization workflows
-- Data pipeline management
-- Schema evolution automation
-
-### Security & Compliance
-
-- Automated vulnerability scanning
-- Dependency security auditing
-- Compliance workflow automation
-- Security hardening processes
-
-## Output Format
-
-Present findings as:
-
-1. **Executive Summary**: Key gaps and highest-impact opportunities
-2. **Tiered Command List**: Organized by implementation priority
-3. **Usage Examples**: Simple command invocation patterns
-4. **Context Integration**: How commands fit existing workflow
-5. **Implementation Roadmap**: Suggested development phases
-
-Focus on actionable insights that directly translate to valuable new commands following the established patterns and design principles.
+- CLEAN UP temporary analysis files
+- PROVIDE clear next steps for command implementation
+- SUGGEST integration with existing development workflows
