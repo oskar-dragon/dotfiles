@@ -51,10 +51,11 @@ This document outlines the personal development preferences and guidelines for A
 
 For large tasks (e.g., refactoring multiple modules, fixing many lint errors), use the following procedure:
 
-1.  Create a `{YYYY-MM-DD-HH-MM}-TASK.md` file. Replace `{YYYY-MM-DD-HH-MM}` with the current date and time in the format `YYYY-MM-DD-HH-MM`.
-2.  Run the necessary command (e.g., `lint`, `prettier`) and pipe the output into `{YYYY-MM-DD-HH-MM}-TASK.md` as a Markdown checklist.
-3.  Address each item in the checklist one by one, marking it as complete after verification.
-4.  Summarise all completed tasks in `{YYYY-MM-DD-HH-MM}-TASK.md` upon completion.
+1.  Ensure the `.tasks/` directory exists in the project root. If not, create it using `mkdir -p .tasks`.
+2.  Create a task file in the `.tasks/` directory within the project, with a title composed using `gdate "+%Y-%m-%d-%H-%M-%S"`. For example, `touch .tasks/$(gdate "+%Y-%m-%d-%H-%M-%S")-TASK.md`.
+3.  Run the necessary command (e.g., `lint`, `prettier`) and pipe the output into `YYYY-MM-DD-HH-MM-SS-TASK.md` as a Markdown checklist.
+4.  Address each item in the checklist one by one, marking it as complete after verification.
+5.  Summarise all completed tasks in `YYYY-MM-DD-HH-MM-SS-TASK.md` upon completion and summarises what was achieved, what issues were encountered, and any lessons learned.
 
 ## 5. Code Standards
 
@@ -64,7 +65,6 @@ For large tasks (e.g., refactoring multiple modules, fixing many lint errors), u
 - Run single, targeted tests over full suites for performance.
 - Use semantic commit messages (`feat:`, `fix:`, `docs:`, etc.).
 - Format code before committing.
-- Use TestContainers for integration tests.
 
 #### TypeScript
 
