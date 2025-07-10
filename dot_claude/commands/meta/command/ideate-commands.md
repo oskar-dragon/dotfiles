@@ -7,7 +7,6 @@ Discover and propose new Claude command opportunities through systematic analysi
 
 ## Context
 
-- Session ID: !`gdate +%s%N`
 - Current directory: !`pwd`
 - Target project context: $ARGUMENTS
 - Project structure: !`fd . -t d -d 2 | head -10 || echo "No subdirectories found"`
@@ -18,7 +17,6 @@ Discover and propose new Claude command opportunities through systematic analysi
 
 STEP 1: Initialize Command Ideation Session
 
-- CREATE session state file: `/tmp/ideate-commands-$SESSION_ID.json`
 - ANALYZE project context and DETERMINE project complexity and technology stack.
 - IDENTIFY automation opportunities and workflow pain points.
 

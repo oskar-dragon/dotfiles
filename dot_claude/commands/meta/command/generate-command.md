@@ -1,6 +1,6 @@
 ---
-allowed-tools: Read, Write, Bash(mkdir:*), Bash(fd:*), Bash(ls:*), Bash(git:*), Bash(gdate:*), Bash(eza:*)
-description: Interactive generator for Claude slash commands with best practices validation and namespace organization.
+allowed-tools: Read, Write, Bash(mkdir:*), Bash(git:*), Bash(gdate:*)
+description: Interactive generator for Claude slash commands with best practices validation and namespace organization
 ---
 
 # /generate-command
@@ -9,175 +9,164 @@ Interactively generate new Claude slash commands, ensuring best practices, prope
 
 ## Context
 
-- Session ID: !`gdate +%s%N`
 - Current directory: !`pwd`
-- Existing .claude directory: !`ls -la .claude 2>/dev/null || echo "No .claude directory found"`
-- Claude commands directory: !`eza -la claude/commands 2>/dev/null | head -10 || echo "Not in dotfiles directory"`
-- Git status: !`git status --porcelain 2>/dev/null | head -3 || echo "Not a git repository"`
+- Git status: !`git status`
+- Existing .claude directory: !`ls -la .claude`
+
+## Usage
+
+```
+/generate-command
+/generate-command --namespace analysis
+```
 
 ## Your Task
 
-STEP 1: Initialize Command Generation Session
+STEP 1: Analyze Current Environment and Gather Requirements
+
+IF no command specification provided:
 
 - ANALYZE existing command structure and project patterns
 - IDENTIFY command namespace requirements
-
-STEP 2: Interactive Command Specification Gathering
-
 - PROMPT user for:
   - **Command Purpose**: What specific task should this command automate?
-  - **Command Name**: Kebab-case, descriptive, follows namespace conventions.
-  - **Parameters Needed**: None, single (`$ARGUMENTS`), or multiple structured inputs.
-  - **Command Type**: Simple utility, Code analysis, Web research, File operations, Git workflow.
-  - **Namespace Selection**: Existing or new namespace (e.g., `analyze/`, `code/`, `git/`).
-  - **Dynamic Context Requirements**: Real-time information needed (e.g., file system, Git state).
-  - **Tools Required**: Read, Write, Edit, Bash commands, WebFetch, WebSearch, Task.
+  - **Command Name**: Kebab-case, descriptive, follows namespace conventions
+  - **Parameters Needed**: None, single (`$ARGUMENTS`), or multiple structured inputs
+  - **Command Type**: Simple utility, Code analysis, Web research, File operations, Git workflow
+  - **Namespace Selection**: Existing or new namespace (e.g., `analyze/`, `code/`, `git/`)
+  - **Dynamic Context Requirements**: Real-time information needed (e.g., file system, Git state)
 
-STEP 3: Generate Command File with Best Practices Validation
+STEP 2: Generate and Validate Command Structure
 
-- GENERATE command structure using the embedded template below:
-  - **Simple utility**: Basic structure with dynamic context (50-80 lines)
-  - **Code analysis**: File reading, pattern matching, reporting (80-120 lines)
-  - **Web research**: WebSearch/WebFetch with structured output (100-150 lines)
-  - **File operations**: Read/Write/Edit with validation (60-100 lines)
-  - **Git workflow**: Git commands with status checking (70-120 lines)
+- GENERATE command structure using appropriate template:
+  - **Simple utility**: Basic structure with dynamic context
+  - **Code analysis**: File reading, pattern matching, reporting
+  - **Web research**: WebSearch/WebFetch with structured output
+  - **File operations**: Read/Write/Edit with validation
+  - **Git workflow**: Git commands with status checking
+
 - VALIDATE against style guide checklist:
-  - [ ] Command is 50-150 lines maximum
+  - [ ] Command is 50-250 lines maximum
   - [ ] No fictional performance claims or parallel processing
-  - [ ] Uses only real Claude Code tools
+  - [ ] Uses only real Claude Code tools + MCPs
   - [ ] Clear, actionable steps with STEP-based structure
   - [ ] Practical examples included
   - [ ] Front matter completeness and minimal `allowed-tools`
   - [ ] Safe and tested Bash commands
   - [ ] Adherence to namespace conventions
 
-STEP 4: Create Command Directory Structure and File
+STEP 3: Create Command File and Provide Usage Instructions
 
-- ENSURE `.claude/commands` (for project-level) or `claude/commands` (for global) directory exists.
-- CREATE namespace directory if needed.
-- WRITE command file to the determined path.
-- CHECK for existing command and PROMPT for overwrite confirmation.
-
-STEP 5: Write and Validate Generated Command
-
-- VALIDATE generated command syntax
-- TEST all Bash commands in `Context` section for compatibility
-- **VERIFY command follows style guide**:
-  - No session state files or complex state management
-  - No parallel processing or coordination systems
-  - Uses only real Claude Code tools and capabilities
-  - Clear, actionable steps without fictional elements
-
-STEP 6: Provide Usage Instructions and Next Steps
-
+- ENSURE `.claude/commands` (for project-level) or `claude/commands` (for global) directory exists
+- CREATE namespace directory if needed
+- WRITE command file to the determined path
+- CHECK for existing command and PROMPT for overwrite confirmation
+- VALIDATE generated command syntax and test all bash commands
 - DISPLAY command usage (e.g., `/project:command-name` or `/command-name`)
 - SHOW command file location for editing
 - SUGGEST testing the command before team distribution
-- RECOMMEND documenting the command in project README if applicable
 - PROVIDE maintenance guidelines for future command updates
-
-## Command Generation Principles
-
-### Generate Commands That Include:
-
-- **50-150 lines maximum** - Focused, lean functionality
-- **Real Claude Code tools only** - Read, Write, Edit, Bash, Grep, WebFetch, WebSearch, Task
-- **Clear, actionable steps** - STEP-based structure with specific instructions
-- **Practical examples** - Actual usage scenarios
-- **Dynamic context** - Real bash commands for context gathering
-
-### Never Generate Commands With:
-
-- **Fictional performance claims** - "10x faster", "parallel processing"
-- **Session state files** - /tmp/ files, checkpoints, resumability
-- **Parallel sub-agents** - Non-existent coordination systems
-- **Complex state management** - Elaborate TRY/CATCH patterns for simple tasks
-- **Pseudo-technical features** - Capabilities that don't exist in Claude Code
-
-### Template Structure
-
-All generated commands follow the template in `/commands/STYLE_GUIDE.md`:
-
-- YAML front matter with minimal allowed-tools
-- Clear context with dynamic bash commands
-- Step-based task structure
-- Expected output format
-- Practical examples
-- Important usage notes
-
-#### Example
-
-```markdown
----
-allowed-tools: [List only tools that will actually be used]
-description: Brief, clear description of what this command does
----
-
-# /command-name
-
-One-sentence description of the command's purpose.
-
-## Context
-
-Brief context about when to use this command:
-
-- Key variable: $ARGUMENTS
-- Current directory: !`pwd`
-- [Other relevant context using actual bash commands]
-
-## Usage
-```
-
-/command-name [arguments]
-/command-name [arguments] --flag # Optional flags if needed
-
-```
-
-## Your Task
-
-**Step 1: [Clear Action]**
-
-Describe what Claude should do in clear, actionable terms:
-- Use bullet points for specific actions
-- Reference actual tools and commands
-- Avoid complex pseudo-code
-
-**Step 2: [Next Action]**
-
-Continue with logical progression:
-- Keep steps simple and focused
-- Use real package manager commands when applicable
-- Reference actual file operations
-
-**Step 3: [Final Action]**
-
-Complete the workflow:
-- Generate clear output
-- Provide actionable recommendations
-- Focus on practical next steps
 
 ## Expected Output
 
-Describe what the command will produce:
-- Specific format (markdown, JSON, etc.)
-- Key sections and content
-- Actionable recommendations
+The command generates:
+
+- New slash command file with proper YAML front matter
+- Structured markdown with Context, Usage, Your Task, Expected Output, and Examples sections
+- Validation report confirming adherence to style guide
+- Usage instructions and maintenance recommendations
 
 ## Examples
 
-### Example 1: [Use Case]
-`/command-name "specific example"`
+### Example 1: Simple Utility Command
 
-Explanation of what this would do and expected outcome.
+`/generate-command`
+_User specifies: analyze-imports, code analysis, simple utility_
 
-### Example 2: [Another Use Case]
-`/command-name "different example"`
+Generates `/analyze-imports.md` with file scanning and import analysis functionality.
 
-Explanation of different scenario and result.
+### Example 2: Git Workflow Command
 
-**IMPORTANT**: [Any critical notes about usage or limitations]
+`/generate-command --namespace git`
+_User specifies: smart-commit, git operations, commit with AI-generated messages_
+
+Generates `/git/smart-commit.md` with git status checking and intelligent commit message generation.
+
+### Example 3: Complete Generation Process
+
+`/generate-command`
+
+**Interactive Session:**
+
+```
+Command Purpose: Scan JavaScript/TypeScript files for unused imports and suggest removals
+Command Name: cleanup-imports
+Command Type: Code analysis
+Namespace: analysis
+Tools Required: Read, Glob, Grep
+Dynamic Context: File count, Git status
 ```
 
-## Reference
+**Generated Command Preview:**
 
-See `/commands/STYLE_GUIDE.md` for complete guidelines and validation checklist.
+```markdown
+---
+allowed-tools: Read, Glob, Grep
+description: Scan JavaScript/TypeScript files for unused imports and suggest removals
+---
+
+# /cleanup-imports
+
+Analyze import statements and identify unused imports for removal.
+
+## Context
+
+- Current directory: !`pwd`
+- JavaScript/TypeScript files: !`fd '\.(js|ts|jsx|tsx)$' . | wc -l`
+- Git status: !`git status --porcelain 2>/dev/null || echo "Clean"`
+
+## Your Task
+
+STEP 1: Scan Project Files
+
+- GLOB all JS/TS files in project
+- READ each file and extract import statements
+  ...
+```
+
+**Validation Results:**
+
+- ✅ Passes all style guide checks
+
+**Final Output:**
+
+- Created: `/Users/project/.claude/commands/analysis/cleanup-imports.md`
+- Usage: `/analysis:cleanup-imports`
+- Tested: All bash context commands validated
+- Next: Test command execution before team sharing
+
+## Best Practices & Generation Principles
+
+### Commands Must Include:
+
+- **STEP-based structure** with clear, actionable instructions
+- **Minimal allowed-tools** (only what's actually used)
+- **Dynamic context** using real bash commands
+- **Practical examples** showing actual usage scenarios
+- **Proper validation** of all bash commands
+
+### Commands Must Never Include:
+
+- **Fictional performance claims** ("10x faster", "parallel processing")
+- **Session state files** (/tmp/ files, checkpoints, resumability)
+- **Parallel sub-agents** or coordination systems
+- **Complex state management** beyond simple task execution
+- **Pseudo-technical features** that don't exist in Claude Code
+
+### Target Command Length:
+
+- **Simple utilities**: 30-80 lines
+- **Most commands**: 50-200 lines
+- **Complex analysis**: Maximum 250 lines
+
+**IMPORTANT**: All generated commands must follow the standard template structure with YAML front matter, Context section with dynamic bash commands, step-based task structure, expected output format, practical examples, and important usage notes.

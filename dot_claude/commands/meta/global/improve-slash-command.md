@@ -10,8 +10,9 @@ Improve slash commands by adding proper structure, tools, and following best pra
 ## Context
 
 - Current directory: !`pwd`
-- Git status: !`git status --porcelain 2>/dev/null || echo "Clean working directory"`
+- Git status: !`git status`
 - Target file: $ARGUMENTS
+- Target file contents: @$ARGUMENTS
 
 ## Your Task
 
@@ -24,7 +25,7 @@ IF no command file specified:
 - EXIT with usage guidance
 
 - READ the command file
-- CHECK command length (target: 50-200 lines)
+- CHECK command length (target: 50-250 lines, excluding YAML front matter)
 - IDENTIFY current structure and format
 - DETERMINE improvement needs based on style guide:
   - Has proper YAML front matter?
@@ -78,9 +79,9 @@ STEP 3: Validate and Test
 - ENSURE YAML front matter is valid
 - VERIFY all bash commands work properly
 - TEST dynamic context commands for output
-- PROVIDE fallback values: !`command || echo "fallback"`
+- USE simple dynamic context: !`command`
 - **VALIDATE against style guide checklist**:
-  - [ ] Command is 50-200 lines
+  - [ ] Command is 50-250 lines (excluding YAML front matter)
   - [ ] No fictional performance claims
   - [ ] No parallel sub-agent references
   - [ ] Uses only real Claude Code tools
@@ -107,7 +108,7 @@ SHOW summary of improvements:
 3. **Clear Structure**: STEP-based execution flow
 4. **Token Efficiency**: Precise tools and concise instructions
 5. **Testing**: Verify all bash commands work properly
-6. **Length Control**: Target 50-200 lines maximum
+6. **Length Control**: Target 50-250 lines maximum (excluding YAML front matter)
 7. **Reality Check**: No fictional performance claims or parallel processing
 8. **Actual Capabilities**: Focus on real Claude Code tools and features
 
@@ -122,8 +123,8 @@ SHOW summary of improvements:
 ## Target Command Length
 
 - **Minimum**: 30 lines (simple utilities)
-- **Target**: 50-150 lines (most commands)
-- **Maximum**: 200 lines (complex analysis)
+- **Target**: 50-200 lines (most commands)
+- **Maximum**: 300 lines (complex analysis)
 
 - YAML front matter with minimal allowed-tools
 - Clear context with dynamic bash commands

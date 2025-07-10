@@ -1,18 +1,32 @@
 {
   "permissions": {
     "deny": [
-      "Bash(curl:*)",
-      "Bash(rm:*)",
+      "Bash(rm -rf /)",
+      "Bash(:(){ :|:& };:)",
+      "Bash(dd if=/dev/zero of=/dev/*)",
+      "Bash(mkfs.*)",
+      "Bash(> /dev/sda*)",
       "Edit(node_modules/**)",
       "Read(.env.*)",
-      "Read(*.key)",
-      "Bash(sudo *)",
       "Edit(.env)",
       "Edit(.env.*)",
       "Edit(*.secret)",
       "Edit(*.key)",
       "Read(.env)",
       "Read(.env.local)"
+    ],
+    "allow": [
+      "mcp__puppeteer__puppeteer_navigate",
+      "mcp__puppeteer__puppeteer_screenshot",
+      "mcp__puppeteer__puppeteer_click",
+      "mcp__puppeteer__puppeteer_fill",
+      "mcp__puppeteer__puppeteer_select",
+      "mcp__puppeteer__puppeteer_hover",
+      "mcp__puppeteer__puppeteer_evaluate",
+      "mcp__sequential-thinking__sequentialthinking",
+      "mcp__context7__resolve-library-id",
+      "mcp__context7__get-library-docs",
+      "mcp__sequential-thinking__sequentialthinking"
     ]
   },
   "env": {
@@ -65,6 +79,5 @@
   "preferredNotifChannel": "terminal_bell",
   "verbose": true,
   "cleanupPeriodDays": 90,
-  "includeCoAuthoredBy": false,
-  "mcpServers": {}
+  "includeCoAuthoredBy": false
 }

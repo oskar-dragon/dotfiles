@@ -1,13 +1,18 @@
 ---
-allowed-tools: mcp__puppeteer__puppeteer_navigate, mcp__puppeteer__puppeteer_screenshot, mcp__puppeteer__puppeteer_click, mcp__puppeteer__puppeteer_fill, mcp__puppeteer__puppeteer_select, mcp__puppeteer__puppeteer_hover, mcp__puppeteer__puppeteer_evaluate, Write
-description: Automate browser interactions for development testing using Puppeteer MCP
+allowed-tools: [mcp__puppeteer__puppeteer_navigate, mcp__puppeteer__puppeteer_screenshot, mcp__puppeteer__puppeteer_click, mcp__puppeteer__puppeteer_fill, mcp__puppeteer__puppeteer_select, mcp__puppeteer__puppeteer_hover, mcp__puppeteer__puppeteer_evaluate, Bash, Write, TodoWrite]
+description: Automate browser testing workflows using Puppeteer MCP tools
 ---
+
+# /browser-automation
+
+Execute automated browser testing for development and QA workflows.
 
 ## Context
 
 - Target URL or action: $ARGUMENTS
-- Screenshot directory: /tmp/browser-automation-$SESSION_ID/
-- Current timestamp: !`gdate "+%Y-%m-%d %H:%M:%S"`
+- Working directory: `pwd`
+- Screenshot directory: browser-automation-`date +%s`/
+- Current timestamp: `date "+%Y-%m-%d %H:%M:%S"`
 
 ## Your Task
 
@@ -29,7 +34,7 @@ ELSE:
 
 STEP 2: Initialize browser and testing environment
 
-- Create screenshot directory: /tmp/browser-automation-$SESSION_ID/
+- Create screenshot directory using: `mkdir -p browser-automation-$(date +%s)`
 - Configure browser with appropriate viewport:
   ```json
   {
@@ -112,7 +117,7 @@ Screenshot naming convention:
 
 STEP 6: Generate test report
 
-Create report file: /tmp/browser-automation-$SESSION_ID/test-report.md
+Create report file: browser-automation-$(date +%s)/test-report.md
 
 Include:
 
@@ -153,35 +158,12 @@ CATCH (interaction_failures):
 
 ## Advanced Testing Scenarios
 
-**Authentication Testing:**
+**Common Testing Flows:**
 
-1. Fill login form
-2. Submit credentials
-3. Verify redirect to dashboard
-4. Test logout functionality
-
-**E-commerce Flow:**
-
-1. Browse products
-2. Add to cart
-3. Proceed to checkout
-4. Fill payment form (test data)
-5. Verify order confirmation
-
-**Search Functionality:**
-
-1. Enter search query
-2. Submit search
-3. Verify results display
-4. Test filters/sorting
-5. Check pagination
-
-**API Integration Testing:**
-
-1. Trigger actions that call APIs
-2. Monitor network requests
-3. Verify data updates on page
-4. Test error handling
+- **Authentication**: Login form → Dashboard redirect → Logout
+- **E-commerce**: Product browse → Add to cart → Checkout flow
+- **Search**: Query input → Results validation → Filter testing
+- **API Integration**: Action triggers → Network monitoring → Data validation
 
 ## Best Practices
 
@@ -203,4 +185,14 @@ Provide:
 4. Specific recommendations for fixes
 5. Areas that need manual testing follow-up
 
-Save all artifacts in session directory for developer review.
+Save all artifacts in browser-automation directory for developer review.
+
+## Usage Examples
+
+```
+/browser-automation https://example.com
+/browser-automation "Test login flow on staging.myapp.com"
+/browser-automation "Responsive design check for mobile"
+```
+
+**IMPORTANT**: Requires Puppeteer MCP server configuration. Screenshots and reports saved locally for review.
