@@ -40,7 +40,6 @@
     ".pnpm-store/**",
     "yarn.lock",
     "package-lock.json",
-
     "dist/**",
     "build/**",
     ".next/**",
@@ -48,28 +47,22 @@
     ".output/**",
     "coverage/**",
     ".nyc_output/**",
-
     "*.tsbuildinfo",
     "*.d.ts.map",
-
     ".vite/**",
     ".webpack/**",
     ".parcel-cache/**",
     ".rollup.cache/**",
-
     "test-results/**",
     "playwright-report/**",
     "cypress/videos/**",
     "cypress/screenshots/**",
-
     "*.log",
     "*.tmp",
     ".DS_Store",
     "Thumbs.db",
-
     ".env*",
     "!.env.example",
-
     ".vscode/**",
     ".idea/**",
     "*.swp",
@@ -79,5 +72,31 @@
   "preferredNotifChannel": "terminal_bell",
   "verbose": true,
   "cleanupPeriodDays": 90,
-  "includeCoAuthoredBy": false
+  "includeCoAuthoredBy": false,
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/Users/oskardragon-work/.nvm/versions/node/v22.17.0/lib/node_modules/rins_hooks/hooks/code-formatter/index.js\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"/Users/oskardragon-work/.nvm/versions/node/v22.17.0/lib/node_modules/rins_hooks/hooks/notification/index.js\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
 }
