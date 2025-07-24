@@ -92,6 +92,14 @@
     "wrap_around": true // Wrap search around to beginning
   },
 
+  "formatter": {
+    "code_actions": {
+      // Use ESLint's --fix:
+      "source.fixAll.eslint": true
+
+    }
+  },
+
   // ===============================================
   // Language-Specific Settings
   // ===============================================
@@ -103,19 +111,16 @@
     },
     "JavaScript": {
       "code_actions_on_format": {
-        "source.organizeImports": false,
         "source.fixAll.eslint": true
       }
     },
     "TypeScript": {
       "code_actions_on_format": {
-        "source.organizeImports": false,
         "source.fixAll.eslint": true
       }
     },
     "TSX": {
       "code_actions_on_format": {
-        "source.organizeImports": false,
         "source.fixAll.eslint": true
       }
     }
