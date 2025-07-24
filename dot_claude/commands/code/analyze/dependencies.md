@@ -1,5 +1,5 @@
 ---
-allowed-tools: Read, Bash(fd:*), Bash(rg:*), Bash(go:*), Bash(npm:*), Bash(yarn:*), Bash(pip:*), Bash(cargo:*), Task
+allowed-tools: [Read, Bash, Glob, Grep, Task]
 description: Analyze project dependencies for security, updates, and optimization opportunities
 ---
 
@@ -21,15 +21,29 @@ Technology stack: !`fd "(package\.json|go\.mod|requirements\.txt|Cargo\.toml)$" 
 
 ## Your Task
 
-**Step 1: Package Manager Detection**
+**STEP 1: Package Manager Detection**
 
-Detect and analyze package managers in the project:
+FOR EACH package manager file found:
 
-- **Go Projects**: Analyze go.mod, go.sum files
-- **Node.js Projects**: Analyze package.json (npm/yarn/pnpm/bun)
-- **Python Projects**: Analyze requirements.txt, pyproject.toml
-- **Rust Projects**: Analyze Cargo.toml, Cargo.lock
-- **Java Projects**: Analyze pom.xml, build.gradle
+IF go.mod OR go.sum exists:
+- SET language to "Go"
+- ANALYZE go.mod and go.sum files
+
+IF package.json exists:
+- SET language to "Node.js" 
+- DETECT package manager (npm/yarn/pnpm/bun)
+
+IF requirements.txt OR pyproject.toml exists:
+- SET language to "Python"
+- ANALYZE Python dependency files
+
+IF Cargo.toml OR Cargo.lock exists:
+- SET language to "Rust"
+- ANALYZE Rust dependency files
+
+IF pom.xml OR build.gradle exists:
+- SET language to "Java"
+- ANALYZE Java dependency files
 
 **Step 2: Dependency Mapping**
 
@@ -40,17 +54,31 @@ Map dependencies and their relationships:
 - Detect circular dependencies if present
 - Analyze internal module dependencies
 
-**Step 3: Security Audit**
+**STEP 3: Security Audit**
 
-Run security audits for each package manager:
+FOR EACH detected language:
 
-- **Go**: `go list -m all` with vulnerability scanning
-- **Node.js**: `npm audit` or `yarn audit`
-- **Python**: `pip-audit` or `safety check` (if available)
-- **Rust**: `cargo audit` (if available)
-- **Java**: `mvn dependency:tree` with security checks
+IF Go project:
+- RUN `go list -m all` to list modules
+- RUN vulnerability scanning if available
 
-Prioritize findings by severity (Critical > High > Medium > Low)
+IF Node.js project:
+- RUN `npm audit` OR `yarn audit` based on detected manager
+- PARSE audit results for vulnerabilities
+
+IF Python project:
+- RUN `pip-audit` OR `safety check` if available
+- CHECK for known security issues
+
+IF Rust project:
+- RUN `cargo audit` if available
+- ANALYZE security vulnerabilities
+
+IF Java project:
+- RUN `mvn dependency:tree` with security checks
+- SCAN for known vulnerabilities
+
+PRIORITIZE findings by severity: Critical > High > Medium > Low
 
 **Step 4: Outdated Dependencies Analysis**
 
@@ -94,7 +122,7 @@ Check license compatibility:
 
 Generate a structured dependency analysis report:
 
-````markdown
+```markdown
 # Dependency Analysis Report
 
 ## Executive Summary
@@ -169,7 +197,6 @@ Generate a structured dependency analysis report:
 # Update security vulnerabilities
 npm install package1@latest package2@latest
 ```
-````
 
 ### Safe Updates (Patches)
 
@@ -194,8 +221,6 @@ npm install package3@latest
 4. [ ] Plan major version upgrades
 5. [ ] Review license compliance issues
 
-```
-
 ## Examples
 
 ### Example 1: Node.js Project
@@ -208,4 +233,3 @@ npm install package3@latest
 `/dependencies` on a project with multiple package managers would analyze each stack separately and provide consolidated recommendations.
 
 **IMPORTANT**: Focus on actionable recommendations with specific commands for updates and removals.
-```

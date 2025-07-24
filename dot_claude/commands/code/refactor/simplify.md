@@ -1,5 +1,6 @@
 ---
-allowed-tools: Read, Write, Edit, MultiEdit, Bash(rg:*), Bash(fd:*), Bash(git:*)
+allowed-tools: Read, Edit, MultiEdit, Glob, Grep, Bash
+argument-hint: "[file-or-directory-path]"
 description: Simplify code by extracting methods, reducing complexity, and improving readability
 ---
 

@@ -1,102 +1,55 @@
 {
   "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(bun *)",
+      "Bash(pnpm *)",
+      "Bash(turbo *)",
+      "Bash(cargo *)",
+      "Bash(go *)",
+      "Bash(git *)",
+      "Bash(git worktree *)",
+      "Bash(gh *)",
+      "Bash(docker *)",
+      "Bash(kubectl *)",
+      "Bash(terraform *)",
+      "Bash(grep *)",
+      "Bash(rg *)",
+      "Bash(ripgrep *)",
+      "Bash(find *)",
+      "Bash(fd *)",
+      "Bash(fzf *)",
+      "Bash(bat *)",
+      "Bash(exa *)",
+      "Bash(eza *)",
+      "Bash(delta *)",
+      "Bash(zoxide *)",
+      "Bash(duf *)",
+      "Bash(htop *)",
+      "Bash(btop *)",
+      "Bash(jq *)",
+      "Bash(yq *)",
+      "Bash(hexyl *)",
+      "Bash(mkdir -p /tmp/claude-scratch*)",
+      "Bash(touch /tmp/claude-*)",
+      "Bash(echo * > /tmp/claude-*)",
+      "Bash(cat /tmp/claude-*)",
+      "WebFetch(*)"
+    ],
     "deny": [
       "Bash(rm -rf /)",
       "Bash(:(){ :|:& };:)",
       "Bash(dd if=/dev/zero of=/dev/*)",
       "Bash(mkfs.*)",
-      "Bash(> /dev/sda*)",
-      "Edit(node_modules/**)",
-      "Read(.env.*)",
-      "Edit(.env)",
-      "Edit(.env.*)",
-      "Edit(*.secret)",
-      "Edit(*.key)",
-      "Read(.env)",
-      "Read(.env.local)"
-    ],
-    "allow": [
-      "mcp__puppeteer__puppeteer_navigate",
-      "mcp__puppeteer__puppeteer_screenshot",
-      "mcp__puppeteer__puppeteer_click",
-      "mcp__puppeteer__puppeteer_fill",
-      "mcp__puppeteer__puppeteer_select",
-      "mcp__puppeteer__puppeteer_hover",
-      "mcp__puppeteer__puppeteer_evaluate",
-      "mcp__sequential-thinking__sequentialthinking",
-      "mcp__context7__resolve-library-id",
-      "mcp__context7__get-library-docs",
-      "mcp__sequential-thinking__sequentialthinking"
+      "Bash(> /dev/sda*)"
     ]
   },
   "env": {
     "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "DISABLE_AUTOUPDATER": "0",
     "EDITOR": "zed",
     "GIT_EDITOR": "zed --wait"
   },
-  "ignorePatterns": [
-    "node_modules/**",
-    ".pnpm-store/**",
-    "yarn.lock",
-    "package-lock.json",
-    "dist/**",
-    "build/**",
-    ".next/**",
-    ".nuxt/**",
-    ".output/**",
-    "coverage/**",
-    ".nyc_output/**",
-    "*.tsbuildinfo",
-    "*.d.ts.map",
-    ".vite/**",
-    ".webpack/**",
-    ".parcel-cache/**",
-    ".rollup.cache/**",
-    "test-results/**",
-    "playwright-report/**",
-    "cypress/videos/**",
-    "cypress/screenshots/**",
-    "*.log",
-    "*.tmp",
-    ".DS_Store",
-    "Thumbs.db",
-    ".env*",
-    "!.env.example",
-    ".vscode/**",
-    ".idea/**",
-    "*.swp",
-    "*.swo"
-  ],
-  "theme": "dark",
-  "preferredNotifChannel": "terminal_bell",
-  "verbose": true,
+  "enableAllProjectMcpServers": true,
   "cleanupPeriodDays": 90,
-  "includeCoAuthoredBy": false,
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"/Users/oskardragon-work/.nvm/versions/node/v22.17.0/lib/node_modules/rins_hooks/hooks/code-formatter/index.js\"",
-            "timeout": 30
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node \"/Users/oskardragon-work/.nvm/versions/node/v22.17.0/lib/node_modules/rins_hooks/hooks/notification/index.js\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ]
-  }
+  "includeCoAuthoredBy": false
 }

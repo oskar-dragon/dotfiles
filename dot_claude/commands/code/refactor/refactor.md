@@ -1,21 +1,20 @@
 ---
+allowed-tools: Read, Glob, Grep, Bash
 description: Analyze code for refactoring opportunities and provide improvement recommendations
-allowed-tools: ["Read", "Edit", "MultiEdit", "Bash", "Glob", "Grep", "LS"]
+argument-hint: "[file-or-directory-path]"
 ---
 
 ## Context
 
 Use this command when you need to identify code smells, architectural issues, or improvement opportunities in your codebase. Best suited for analyzing existing code quality and planning refactoring work.
 
-## Dynamic Context
+## Context
 
-```bash
-echo "Current working directory: $(pwd)"
-echo "Git status: $(git status --porcelain | wc -l) modified files"
-echo "Total files: $(find . -type f -name '*.ts' -o -name '*.js' -o -name '*.go' | wc -l)"
-echo "Test files: $(find . -type f -name '*.test.*' -o -name '*_test.go' | wc -l)"
-echo "Recent commits: $(git log --oneline -5)"
-```
+- Target: $ARGUMENTS
+- Current directory: !`pwd`
+- Git status: !`git status --porcelain | wc -l | tr -d ' '` changes pending
+- Total files: !`fd '\.(ts|js|go)$' . | wc -l | tr -d ' '`
+- Test files: !`fd '\.(test|spec)\.' . | wc -l | tr -d ' '`
 
 ## Task
 
