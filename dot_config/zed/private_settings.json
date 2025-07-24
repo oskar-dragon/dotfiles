@@ -55,7 +55,8 @@
     "eslint": true, // JavaScript/TypeScript linting
     "go": true, // Go language support
     "markdown": true, // Markdown support
-    "json": true // JSON support
+    "json": true, // JSON support
+    "graphql": true // GraphQL support
   },
 
   // ===============================================
@@ -92,14 +93,6 @@
     "wrap_around": true // Wrap search around to beginning
   },
 
-  "formatter": {
-    "code_actions": {
-      // Use ESLint's --fix:
-      "source.fixAll.eslint": true
-
-    }
-  },
-
   // ===============================================
   // Language-Specific Settings
   // ===============================================
@@ -109,20 +102,38 @@
         "source.organizeImports": true
       }
     },
+    "Markdown": {
+      "format_on_save": "on"
+    },
     "JavaScript": {
-      "code_actions_on_format": {
-        "source.fixAll.eslint": true
-      }
+      "formatter": [
+        "prettier",
+        {
+          "code_actions": {
+            "source.fixAll.eslint": true
+          }
+        }
+      ]
     },
     "TypeScript": {
-      "code_actions_on_format": {
-        "source.fixAll.eslint": true
-      }
+      "formatter": [
+        "prettier",
+        {
+          "code_actions": {
+            "source.fixAll.eslint": true
+          }
+        }
+      ]
     },
     "TSX": {
-      "code_actions_on_format": {
-        "source.fixAll.eslint": true
-      }
+      "formatter": [
+        "prettier",
+        {
+          "code_actions": {
+            "source.fixAll.eslint": true
+          }
+        }
+      ]
     }
   },
 
