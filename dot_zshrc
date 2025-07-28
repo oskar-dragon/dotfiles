@@ -132,3 +132,4 @@ esac
 # pnpm end
 #
 source /opt/homebrew/share/powerlevel10k/powerlevel10k.zsh-theme
+export PATH="$HOME/.local/bin:$PATH"
