@@ -1,5 +1,5 @@
 [packages.curl]
-packages = ["zsh"]
+packages = ["zsh", "claude.ai/install.sh"]
 
 [packages.homebrew]
 to_remove = [
@@ -77,10 +77,9 @@ casks = [
 formulae = []
 
 [packages.npm]
+to_remove = ["@anthropic-ai/claude-code"]
 [packages.npm.common]
-packages = [
-    "@anthropic-ai/claude-code", # Claude Code CLI
-]
+packages = []
 [packages.npm.work_computer]
 packages = ["turbo"]
 [packages.npm.personal_computer]

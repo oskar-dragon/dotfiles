@@ -9,23 +9,6 @@ This document outlines the personal development preferences and guidelines for A
 - **Clarity is Key:** Always ask for clarification if requirements are ambiguous or conflict with these guidelines.
 - **Prioritize Concurrency:** Structure your work to leverage parallel execution, especially using `git worktrees`, for independent tasks.
 
-## 2. Operational Rules & Constraints
-
-### File Access Permissions
-
-**ALLOWED TO USE:**
-
-- Modern CLI tools: `rg`, `fd`, `bat`, `eza`, `jq`, `yq`, `fzf`, `delta`
-- Git worktrees for parallel development.
-- GitHub CLI (`gh`) for all GitHub operations.
-
-**FORBIDDEN TO USE:**
-
-- Legacy tools: `grep`, `find`, `cat`, `ls`, `df`, `top`, `xxd`
-- Web interface for GitHub operations (use `gh` CLI)
-
----
-
 ## 4. Development Workflows
 
 ### Standard Workflow: Explore, Plan, Code, Commit
@@ -73,12 +56,3 @@ For large tasks (e.g., refactoring multiple modules, fixing many lint errors), u
 - **ALWAYS** Use `camelCase` for variable and function names.
 - **ALWAYS** Use `PascalCase` for class names, types, and React components.
 - **ALWAYS** Use `type` instead of `interface`.
-
-## 6. Claude Code Features & Customization
-
-### Thinking Modes
-
-- `think`: For simple planning.
-- `think hard`: For standard implementation plans.
-- `think harder`: For deep architectural analysis.
-- `ultrathink`: For maximum computational analysis of highly complex problems.

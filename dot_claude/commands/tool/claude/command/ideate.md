@@ -10,7 +10,7 @@ Discover and propose new Claude command opportunities through systematic analysi
 
 - Current directory: !`pwd`
 - Target project context: $ARGUMENTS
-- Project structure: !`fd . -t d -d 2 | head -10 || echo "No subdirectories found"`
+- Project structure: !`\fd . -t d -d 2 | head -10 || echo "No subdirectories found"`
 - Technology indicators: !`fd "(package\.json|go\.mod)" . -d 3 | head -5 || echo "No build files detected"`
 - Existing Claude commands: !`fd "\.md$" .claude/commands 2>/dev/null | wc -l | tr -d ' ' || echo "0"` custom commands
 
