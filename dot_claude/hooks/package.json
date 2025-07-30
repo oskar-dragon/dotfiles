@@ -5,9 +5,13 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
-    "@types/node": "^24.1.0"
+    "@types/node": "^24.1.0",
+    "@types/node-notifier": "^8.0.5"
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "dependencies": {
+    "node-notifier": "^10.0.1"
   }
 }

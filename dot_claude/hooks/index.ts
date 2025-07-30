@@ -13,6 +13,7 @@ import { runHook } from "./lib";
 import { saveSessionData } from "./session";
 import { formatEslint } from "./src/formatter/eslint";
 import { formatPrettier } from "./src/formatter/preettier";
+import { notify } from "./src/notification";
 
 // PreToolUse handler - called before Claude uses any tool
 async function preToolUse(
@@ -42,6 +43,10 @@ async function preToolUse(
     // Block dangerous commands
     if (command.includes("rm -rf /") || command.includes("rm -rf ~")) {
       console.error("❌ Dangerous command detected! Blocking execution.");
+      await notify("error", {
+        title: "Claude Code - Dangerous Command Blocked",
+        message: `Dangerous command blocked: ${command}`,
+      });
       return {
         decision: "block",
         reason: `Dangerous command detected: ${command}`,
@@ -72,6 +77,24 @@ async function postToolUse(payload: PostToolUsePayload): Promise<void> {
     console.log(`✅ File written successfully!`);
   }
 
+  // Only notify on specific meaningful completions to avoid spam
+  if (
+    payload.tool_name === "Bash" &&
+    payload.tool_response?.success !== false
+  ) {
+    const command = (payload.tool_input as { command: string })?.command;
+    if (
+      command &&
+      (command.includes("test") ||
+        command.includes("build") ||
+        command.includes("deploy"))
+    ) {
+      await notify("task-completed", {
+        message: `Command completed: ${command.split(" ")[0]}`,
+      });
+    }
+  }
+
   // Add your custom post-processing logic here
 }
 
@@ -92,6 +115,10 @@ async function stop(payload: StopPayload): Promise<void> {
 
   // Example: Summary or cleanup logic
   console.log(`👋 Session ended`);
+  await notify("task-completed", {
+    title: "Claude Code - Session Ended",
+    message: "Claude Code session has ended",
+  });
 }
 
 // SubagentStop handler - called when a Claude subagent (Task tool) stops
@@ -103,6 +130,10 @@ async function subagentStop(payload: SubagentStopPayload): Promise<void> {
 
   // Example: Log subagent completion
   console.log(`🤖 Subagent task completed`);
+  await notify("task-completed", {
+    title: "Claude Code - Subagent Complete",
+    message: "Subagent task completed successfully",
+  });
 
   // Add your custom subagent cleanup logic here
   // Note: Be careful with stop_hook_active to avoid infinite loops

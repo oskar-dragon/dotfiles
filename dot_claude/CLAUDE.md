@@ -71,4 +71,4 @@ For parallel development tasks:
 - **ALWAYS** Use `kebab-case` for file names and directories
 - **ALWAYS** Use `camelCase` for variable and function names
 - **ALWAYS** Use `PascalCase` for class names, types, and React components
-- **ALWAYS** Use `type` instead of `interface`
+- **ALWAYS** use `type` and never use `interface` in typescript

@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import * as path from "node:path";
 import type { PostToolUsePayload } from "../../lib";
-import { extractFilePath } from "./utils";
+import { extractFilePath, shouldFormat } from "./utils";
 
 export type FormatResult = {
   success: boolean;
@@ -11,7 +11,6 @@ export type FormatResult = {
   filePath: string;
 };
 
-// Prettier-supported file extensions
 const ESLINT_EXTENSIONS = new Set([
   ".js",
   ".jsx",
@@ -82,12 +81,13 @@ export async function formatEslint(
   payload: PostToolUsePayload,
 ): Promise<void> {
   try {
+    if (!shouldFormat(payload)) return;
     const result = await formatFile(payload, runEslint);
     if (!result) return;
 
     if (result.success) {
       console.log(
-        `🎨 [${operation}] Formatted ${path.basename(result.filePath)} with Prettier`,
+        `🎨 [${operation}] Formatted ${path.basename(result.filePath)} with Eslint`,
       );
     } else {
       console.log(

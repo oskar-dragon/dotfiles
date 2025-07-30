@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import * as path from "node:path";
 import type { PostToolUsePayload } from "../../lib";
-import { extractFilePath } from "./utils";
+import { extractFilePath, shouldFormat } from "./utils";
 
 export type FormatResult = {
   success: boolean;
@@ -82,6 +82,7 @@ export async function formatPrettier(
   payload: PostToolUsePayload,
 ): Promise<void> {
   try {
+    if (!shouldFormat(payload)) return;
     const result = await formatFile(payload, runPrettier);
     if (!result) return;
 
