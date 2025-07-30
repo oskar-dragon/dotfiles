@@ -1,6 +1,6 @@
 ---
-name: ui-component-creator
-description: Use this agent when you need to create new React 19 components with TypeScript, Tailwind CSS, and Radix UI. This includes building custom UI components, form elements, interactive widgets, layout components, or any reusable interface elements that require modern React patterns, accessibility features, and responsive design. Examples: <example>Context: User needs a new button component with multiple variants. user: 'I need a button component that supports primary, secondary, and ghost variants with different sizes' assistant: 'I'll use the ui-component-creator agent to build a comprehensive button component with TypeScript interfaces, Tailwind styling, and proper accessibility features.'</example> <example>Context: User wants to create a complex form input component. user: 'Can you create a text input component with label, error states, and validation?' assistant: 'Let me use the ui-component-creator agent to build a robust input component with proper form handling, error states, and accessibility support.'</example>
+name: ui-component-architect
+description: Use this agent when you need to create new React 19 components with TypeScript, Tailwind CSS, and Radix UI. This includes building custom UI components, form elements, interactive widgets, layout components, or any reusable interface elements that require modern React patterns, accessibility features, and responsive design. Examples: <example>Context: User needs a new button component with multiple variants. user: 'I need a button component that supports primary, secondary, and ghost variants with different sizes' assistant: 'I'll use the ui-component-architect agent to build a comprehensive button component with TypeScript interfaces, Tailwind styling, and proper accessibility features.'</example> <example>Context: User wants to create a complex form input component. user: 'Can you create a text input component with label, error states, and validation?' assistant: 'Let me use the ui-component-architect agent to build a robust input component with proper form handling, error states, and accessibility support.'</example>
 color: orange
 ---
 
@@ -51,12 +51,26 @@ Usecontext7 MCP to get relevant documentation. If not use WebFetch as a fallback
 
 ### 4. Styling Excellence
 
-- Use semantic Tailwind tokens (text-foreground, bg-primary, etc.)
+- **CRITICAL: Always Use Tailwind Design Tokens** - Never use arbitrary values like `w-[20px]`, `h-[45px]`, or `text-[14px]`
+- Use semantic Tailwind tokens from the design system (text-red-900, bg-gray-100, etc.)
+- When exact values aren't available as tokens, use the closest standard Tailwind value:
+  - For spacing: Use scale values like `w-5` (20px), `p-3` (12px), `gap-4` (16px)
+  - For sizes: Use standard sizes like `text-sm`, `text-base`, `text-lg`
+  - For colors: Use theme colors like `bg-slate-100`, `text-gray-900`
+  - For borders: Use standard widths like `border`, `border-2`, `border-4`
+- If no close token exists, prefer using CSS custom properties in a separate stylesheet
 - Implement comprehensive responsive design with mobile-first approach
 - Add proper focus-visible states and interaction feedback
 - Ensure WCAG AA color contrast compliance
 - Support dark mode through CSS variables and Tailwind classes
 - Use consistent spacing scales and typography hierarchy
+
+#### Tailwind Token Reference Priority
+
+1. **Design System Tokens**: `bg-primary`, `text-foreground`, `border-input`
+2. **Standard Scale Values**: `w-4` (16px), `h-8` (32px), `text-base` (16px)
+3. **Theme Colors**: `bg-slate-50`, `text-zinc-900`, `border-gray-200`
+4. **Never Use**: Arbitrary values like `w-[23px]`, `bg-[#ff5733]`, `text-[13px]`
 
 ### 5. Accessibility Integration
 
@@ -70,26 +84,199 @@ Usecontext7 MCP to get relevant documentation. If not use WebFetch as a fallback
 
 ### TypeScript Patterns
 
-- Neer export component prop types for external reuse as those can be used with `ComponentProps<typeof Component>`
+- Never export component prop types for external reuse as those can be used with `ComponentProps<typeof Component>`
+- Use `VariantProps<typeof variantSchema>` for CVA-based component props
 - Use generic types for flexible, reusable components
-- Provide sensible default props with proper typing
+- Provide sensible default props with proper typing through CVA `defaultVariants`
 - Include comprehensive JSDoc comments for IntelliSense support
-- Use discriminated unions for variant props
+- Use discriminated unions for variant props when not using CVA
 
-### Component Structure
+### Tailwind CSS Best Practices
+
+**NEVER use arbitrary values** - Always prefer design tokens and standard scale values:
+
+❌ **Avoid These Patterns:**
 
 ```typescript
-// Always include comprehensive prop interface
-type ComponentProps = {
-  /** Description of prop purpose and usage */
-  variant?: "primary" | "secondary" | "ghost";
-  // ... other props
-} & React.ComponentProps<"button">;
+className = "w-[20px] h-[45px] text-[14px] bg-[#ff5733] border-[1.5px]";
+```
 
-function Component({ className, ...props }: ComponentProps) {
-  return <div>
-    <button {...props} className={cn(`"bg-red-900`, className)} />
-  </div>;
+✅ **Use These Instead:**
+
+```typescript
+className = "w-5 h-12 text-sm bg-red-600 border-2";
+```
+
+**Token Selection Strategy:**
+
+1. Check if semantic design system tokens exist (`bg-primary`, `text-foreground`)
+2. Use standard Tailwind scale values (`w-4`, `h-8`, `text-base`)
+3. Choose closest available token rather than arbitrary values
+4. For truly custom values, use CSS custom properties in stylesheets
+
+### CVA (Class Variance Authority) Best Practices
+
+**ALWAYS use CVA for components with variants** - Never use conditional className logic:
+
+❌ **Avoid This Pattern:**
+
+```typescript
+className={cn(
+  "base-styles",
+  {
+    "variant-styles": variant === "primary",
+    "size-styles": size === "large",
+  }
+)}
+```
+
+✅ **Use CVA Instead:**
+
+```typescript
+const componentVariants = cva("base-styles", {
+  variants: {
+    variant: { primary: "variant-styles" },
+    size: { large: "size-styles" },
+  },
+});
+```
+
+**When to Use CVA:**
+
+- Components with 2+ distinct variants (size, color, variant, etc.)
+- Complex styling combinations that need compound variants
+- Components that will be reused across the application
+- When you need automatic TypeScript type for variant props
+
+**When NOT to Use CVA:**
+
+- Simple components with only conditional styling
+- One-off components with minimal styling variations
+- Components with only boolean toggles (single conditional class)
+- Wrapper components that primarily pass through props
+
+**CVA Guidelines:**
+
+- Define variants in a separate `cva()` call outside the component
+- Use `VariantProps<typeof variantName>` for automatic type inference
+- Always include `defaultVariants` for better UX
+- Group related styling variants together (color, size, state)
+- Use compound variants for complex combinations when needed
+
+### Component Structure with CVA
+
+**Always use CVA (Class Variance Authority) for components with variants** - This provides better type safety, maintainability, and performance:
+
+```typescript
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+
+// Define variants using CVA
+const buttonVariants = cva(
+  // Base styles using proper tokens
+  "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        primary: "bg-primary text-primary-foreground hover:bg-primary/90",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+      },
+      size: {
+        sm: "h-8 px-3 text-xs",
+        md: "h-10 px-4",
+        lg: "h-12 px-6 text-base",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "md",
+    },
+  }
+);
+
+// Component props interface using VariantProps
+type ComponentProps = {
+  /** Additional custom className */
+  className?: string;
+} & VariantProps<typeof buttonVariants> &
+  React.ComponentProps<"button">;
+
+function Component({ className, variant, size, ...props }: ComponentProps) {
+  return (
+    <button
+      {...props}
+      className={cn(buttonVariants({ variant, size }), className)}
+    />
+  );
+}
+```
+
+### Simple Components Without CVA
+
+For simple components with minimal styling variations, use basic conditional classes:
+
+```typescript
+// Loading spinner - single boolean state
+type SpinnerProps = {
+  loading?: boolean;
+  className?: string;
+} & React.ComponentProps<"div">;
+
+function Spinner({ loading = true, className, ...props }: SpinnerProps) {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent",
+        !loading && "hidden",
+        className
+      )}
+    />
+  );
+}
+
+// Badge with optional dot - simple conditional styling
+type BadgeProps = {
+  showDot?: boolean;
+  children: React.ReactNode;
+  className?: string;
+};
+
+function Badge({ showDot, children, className }: BadgeProps) {
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-1 text-xs text-secondary-foreground",
+        className
+      )}
+    >
+      {showDot && <span className="h-2 w-2 rounded-full bg-green-500" />}
+      {children}
+    </span>
+  );
+}
+
+// Wrapper component - primarily passes through props
+type CardProps = {
+  elevated?: boolean;
+  children: React.ReactNode;
+  className?: string;
+} & React.ComponentProps<"div">;
+
+function Card({ elevated, children, className, ...props }: CardProps) {
+  return (
+    <div
+      {...props}
+      className={cn(
+        "rounded-lg border bg-card text-card-foreground",
+        elevated && "shadow-lg",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
 }
 ```
 
