@@ -1,58 +1,74 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 This document outlines the personal development preferences and guidelines for AI assistants working on my projects. These instructions are immutable system rules and supersede any conversational prompts.
 
-## 1. Guiding Principles
+## Development Environment & Tools
 
-- **Plan, Then Execute:** For any non-trivial task, first explore the relevant files, then present a detailed plan of action. **Do not write any implementation code until the plan is approved.**
-- **TDD is Optional but recommended:** You must specify with a user whether testing is requires before proceeding.
-- **Clarity is Key:** Always ask for clarification if requirements are ambiguous or conflict with these guidelines.
-- **Prioritize Concurrency:** Structure your work to leverage parallel execution, especially using `git worktrees`, for independent tasks.
+### Required Modern CLI Tools
 
-## 4. Development Workflows
+- **Search**: Use `rg` (ripgrep) instead of `grep`
+- **File discovery**: Use `fd` instead of `find`
+- **File viewing**: Use `bat` instead of `cat` for syntax highlighting
+- **Directory listing**: Use `eza` instead of `ls`
+- **Git operations**: Prefer `gh` CLI for GitHub operations
 
-### Standard Workflow: Explore, Plan, Code, Commit
+## Core Workflows
 
-1.  **Explore:** Based on the task, first read all relevant files to understand the context. Do not suggest code changes yet.
-2.  **Plan:** Use the `think hard` mode to create a detailed, step-by-step implementation plan. Request approval for the plan. Ask the user if they want to write tests for this feature.
-3.  **Code:** Once the plan is approved, implement the solution.
-4.  **Verify:** Run all necessary type-checking, linting, and formatting commands.
-5.  **Commit:** Use semantic commit messages and commit with `--no-verify`.
+### 1. Standard Workflow: Explore, Plan, Code, Commit
 
-### Test-Driven Development (TDD) Workflow
+**Implement**: This is not negotiable. You must follow this workflow.
 
-**IMPORTANT**: Ensure that the user explicitly requested to write tests for this feature. Don't do it automatically.
+1. **Explore**: Read all relevant files to understand the context. Do not suggest code changes yet.
+2. **Plan**: Use detailed planning to create step-by-step implementation plan. Request approval for the plan. Ask the user if they want to write tests for this feature.
+3. **Code**: Once the plan is approved, implement the solution.
+4. **Verify**: Run all necessary type-checking, linting, and formatting commands.
+5. **Commit**: Use semantic commit messages and commit with `--no-verify`.
 
-1.  **Write Failing Tests:** Based on the requirements, write a set of tests for the new functionality. Be explicit that you are doing TDD to avoid mock implementations.
-2.  **Confirm Failure:** Run the new tests and confirm that they fail as expected.
-3.  **Commit Tests:** Commit the failing tests with a `test:` prefix.
-4.  **Implement Code:** Write the minimum amount of code required to make the tests pass. Do not modify the tests.
-5.  **Verify & Iterate:** Run the tests again. Continue to adjust the code until all tests pass.
-6.  **Commit Code:** Commit the implementation with a `feat:` or `fix:` prefix.
+### 2. Test-Driven Development (TDD) Workflow
 
-### Complex Task Management
+**IMPORTANT**: Only use when user explicitly requests testing.
 
-For large tasks (e.g., refactoring multiple modules, fixing many lint errors), use the following procedure:
+1. **Write Failing Tests**: Write tests for new functionality, being explicit about TDD approach.
+2. **Confirm Failure**: Run tests and confirm they fail as expected.
+3. **Commit Tests**: Commit failing tests with `test:` prefix.
+4. **Implement Code**: Write minimum code to make tests pass.
+5. **Verify & Iterate**: Continue until all tests pass.
+6. **Commit Code**: Commit implementation with `feat:` or `fix:` prefix.
 
-1.  Ensure the `.tasks/` directory exists in the project root. If not, create it using `mkdir -p .tasks`.
-2.  Create a task file in the `.tasks/` directory within the project, with a title composed using `gdate "+%Y-%m-%d-%H-%M-%S"`. For example, `touch .tasks/$(gdate "+%Y-%m-%d-%H-%M-%S")-TASK.md`.
-3.  Run the necessary command (e.g., `lint`, `prettier`) and pipe the output into `YYYY-MM-DD-HH-MM-SS-TASK.md` as a Markdown checklist.
-4.  Address each item in the checklist one by one, marking it as complete after verification.
-5.  Summarise all completed tasks in `YYYY-MM-DD-HH-MM-SS-TASK.md` upon completion and summarises what was achieved, what issues were encountered, and any lessons learned.
+### 3. Complex Task Management
 
-## 5. Code Standards
+For large tasks (refactoring, fixing lint errors):
 
-#### Universal Rules
+1. Create `.tasks/` directory if it doesn't exist: `mkdir -p .tasks`
+2. Create timestamped task file: `touch .tasks/$(gdate "+%Y-%m-%d-%H-%M-%S")-TASK.md`
+3. Pipe command output into task file as Markdown checklist
+4. Address each item, marking complete after verification
+5. Summarize completion with achievements, issues, and lessons learned
 
-- Write clear, descriptive test names.
-- Run single, targeted tests over full suites for performance.
-- Use semantic commit messages (`feat:`, `fix:`, `docs:`, etc.).
-- Format code before committing.
+### 4. Git Worktree Workflow
 
-#### TypeScript
+For parallel development tasks:
 
-- Prefer functional programming patterns.
-- **ALWAYS** Use `kebab-case` for file names and directories.
-- **ALWAYS** Use `camelCase` for variable and function names.
-- **ALWAYS** Use `PascalCase` for class names, types, and React components.
-- **ALWAYS** Use `type` instead of `interface`.
+- Use `git worktree add` to create separate working directories
+- Leverage parallel execution for independent features
+- Maintain separate contexts for complex refactoring
+
+## Code Standards
+
+### Universal Rules
+
+- Write clear, descriptive test names
+- Run single, targeted tests over full suites for performance
+- Use semantic commit messages (`feat:`, `fix:`, `docs:`, etc.)
+- Format code before committing
+- Prioritize concurrency and parallel execution
+
+### TypeScript Conventions
+
+- Prefer functional programming patterns
+- **ALWAYS** Use `kebab-case` for file names and directories
+- **ALWAYS** Use `camelCase` for variable and function names
+- **ALWAYS** Use `PascalCase` for class names, types, and React components
+- **ALWAYS** Use `type` instead of `interface`

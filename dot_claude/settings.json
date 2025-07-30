@@ -51,5 +51,62 @@
   },
   "enableAllProjectMcpServers": true,
   "cleanupPeriodDays": 90,
-  "includeCoAuthoredBy": false
+  "includeCoAuthoredBy": false,
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun ~/.claude/hooks/index.ts Notification"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun ~/.claude/hooks/index.ts Stop"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun ~/.claude/hooks/index.ts PreToolUse"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun ~/.claude/hooks/index.ts PostToolUse"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bun ~/.claude/hooks/index.ts SubagentStop"
+          }
+        ]
+      }
+    ]
+  }
 }

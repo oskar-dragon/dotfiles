@@ -12,4 +12,4 @@ DS_Store
 .config/zed/prompts/**
 .claude/auth.json
 .claude/session.json
-CLAUDE.md
+**/node_modules
