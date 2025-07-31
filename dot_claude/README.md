@@ -9,14 +9,21 @@ Personal configuration and development preferences for Claude Code CLI. This dir
 ├── README.md                 # This documentation
 ├── CLAUDE.md                # Core development principles and workflows
 ├── settings.json            # Claude Code permissions and environment settings
+├── agents/                  # Specialized AI agents for complex tasks
+│   ├── claude/             # Claude-specific optimization agents
+│   ├── code/               # Code analysis and development agents
+│   └── universal/          # General-purpose utility agents
 ├── commands/                # Custom slash commands organized by category
+│   ├── agent/              # Browser automation and agent management
 │   ├── code/               # Code analysis, refactoring, and git operations
 │   ├── docs/               # Documentation generation and management
+│   ├── github/             # GitHub-specific operations
+│   ├── meta/               # Knowledge extraction and meta operations
 │   ├── project/            # Project management and task tracking
 │   ├── research/           # Investigation and web research tools
+│   ├── spec/               # Specification and requirements management
 │   └── tool/               # Utility commands and integrations
-├── templates/              # Reusable templates for specs and projects
-└── backup_comma/           # Archive of previous command iterations
+└── templates/              # Reusable templates for specs and projects
 ```
 
 ## Core Files
@@ -41,7 +48,7 @@ Security-focused permissions and environment configuration:
 
 ## Custom Slash Commands
 
-The `commands/` directory contains 50+ specialized workflows organized by domain:
+The `commands/` directory contains 46 specialized workflows organized by domain:
 
 ### Code Operations (`/code/*`)
 
@@ -50,12 +57,25 @@ The `commands/` directory contains 50+ specialized workflows organized by domain
 - **Git**: Pull requests, merge conflict resolution, branch operations
 - **Security**: Code auditing and vulnerability assessment
 - **Testing**: Test generation and validation
+- **Review**: Comprehensive code review workflows
 
 ### Documentation (`/docs/*`)
 
 - **Generation**: Automated documentation creation
 - **Management**: Updates, explanations, and decision records
 - **Visualization**: Diagram generation and technical illustrations
+
+### Agent Operations (`/agent/*`)
+
+- **Browser Automation**: Web interaction and testing workflows
+
+### GitHub Integration (`/github/*`)
+
+- **Code Search**: Advanced GitHub repository search and analysis
+
+### Meta Operations (`/meta/*`)
+
+- **Knowledge Extraction**: Content analysis and synthesis from various sources
 
 ### Project Management (`/project/*` & `/spec/*`)
 
@@ -67,7 +87,11 @@ The `commands/` directory contains 50+ specialized workflows organized by domain
 
 - **Investigation**: Deep-dive analysis workflows
 - **Web Research**: Structured information gathering
-- **Knowledge Extraction**: Content analysis and synthesis
+
+### Tool Integrations (`/tool/*`)
+
+- **Claude Optimization**: Claude.md enhancement and command generation
+- **Zed Integration**: Task management within Zed editor
 
 ## Quick Start
 
@@ -83,6 +107,9 @@ claude /docs/document
 
 # Example: Analyze technical debt
 claude /code/analyze/technical-debt
+
+# Example: Create project specification
+claude /spec/create
 ```
 
 ## Agentic Command Guidelines
