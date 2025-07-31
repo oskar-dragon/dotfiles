@@ -1,0 +1,30 @@
+# One-command MCP server installation
+echo "Installing Claude Code MCP Servers..."
+
+# Install Sequential Thinking MCP
+echo "Setting up Sequential Thinking..."
+claude mcp add sequential-thinking -s user -- npx -y @modelcontextprotocol/server-sequential-thinking
+
+# Install Puppeteer MCP
+echo "Setting up Puppeteer browser automation..."
+claude mcp add puppeteer -s user -- npx -y @modelcontextprotocol/server-puppeteer
+
+# Install Playwright MCP
+# https://github.com/microsoft/playwright-mcp
+echo "Setting up Playwright automation..."
+claude mcp add -s user playwright npx @playwright/mcp@latest
+
+# Install Context7
+echo "Setting up Context7..."
+claude mcp add context7 -- npx -y @upstash/context7-mcp
+
+# Install Figma MCP Dev Servers
+echo "Setting up Figma MCP..."
+claude mcp add -s user --transport sse figma-dev-mode-mcp-server http://127.0.0.1:3845/sse
+
+# Verify installation
+echo "Verifying installation..."
+claude mcp list
+
+echo "Basic MCP servers installed successfully!"
+echo "For API key-based servers (Brave Search, Firecrawl) and Browser Tools, see the README for individual setup instructions."

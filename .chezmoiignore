@@ -13,3 +13,7 @@ DS_Store
 .claude/auth.json
 .claude/session.json
 **/node_modules
+**/projects
+**/shell-snapshots
+**/statsig
+**/todos

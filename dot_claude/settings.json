@@ -1,4 +1,11 @@
 {
+  "cleanupPeriodDays": 90,
+  "env": {
+    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
+    "EDITOR": "zed",
+    "GIT_EDITOR": "zed --wait"
+  },
+  "includeCoAuthoredBy": false,
   "permissions": {
     "allow": [
       "Bash(npm run *)",
@@ -44,14 +51,7 @@
       "Bash(> /dev/sda*)"
     ]
   },
-  "env": {
-    "CLAUDE_CODE_ENABLE_TELEMETRY": "0",
-    "EDITOR": "zed",
-    "GIT_EDITOR": "zed --wait"
-  },
   "enableAllProjectMcpServers": true,
-  "cleanupPeriodDays": 90,
-  "includeCoAuthoredBy": false,
   "hooks": {
     "Notification": [
       {
@@ -108,5 +108,8 @@
         ]
       }
     ]
+  },
+  "feedbackSurveyState": {
+    "lastShownTime": 1753941932502
   }
 }
