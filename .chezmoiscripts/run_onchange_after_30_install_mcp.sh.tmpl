@@ -1,30 +1,53 @@
-# One-command MCP server installation
-echo "Installing Claude Code MCP Servers..."
+#!/bin/bash
+
+{{- template "shared_script_utils.bash" . }}
+
+header "Installing Claude Code MCP Servers"
+
+# Helper function to install MCP server with error handling
+install_mcp_server() {
+    local server_name="$1"
+    local server_description="$2"
+    shift 2
+    local command=("$@")
+    
+    info "Setting up ${server_description}..."
+    if "${command[@]}" 2>&1 | grep -q "already exists"; then
+        notice "${server_name} already installed, skipping..."
+    elif ! "${command[@]}"; then
+        warning "Failed to install ${server_name}, continuing..."
+    else
+        success "${server_name} installed successfully"
+    fi
+}
 
 # Install Sequential Thinking MCP
-echo "Setting up Sequential Thinking..."
-claude mcp add sequential-thinking -s user -- npx -y @modelcontextprotocol/server-sequential-thinking
+install_mcp_server "sequential-thinking" "Sequential Thinking" \
+    claude mcp add sequential-thinking -s user -- npx -y @modelcontextprotocol/server-sequential-thinking
 
 # Install Puppeteer MCP
-echo "Setting up Puppeteer browser automation..."
-claude mcp add puppeteer -s user -- npx -y @modelcontextprotocol/server-puppeteer
+install_mcp_server "puppeteer" "Puppeteer browser automation" \
+    claude mcp add puppeteer -s user -- npx -y @modelcontextprotocol/server-puppeteer
 
 # Install Playwright MCP
 # https://github.com/microsoft/playwright-mcp
-echo "Setting up Playwright automation..."
-claude mcp add -s user playwright npx @playwright/mcp@latest
+install_mcp_server "playwright" "Playwright automation" \
+    claude mcp add -s user playwright npx @playwright/mcp@latest
 
 # Install Context7
-echo "Setting up Context7..."
-claude mcp add context7 -- npx -y @upstash/context7-mcp
+install_mcp_server "context7" "Context7" \
+    claude mcp add context7 -- npx -y @upstash/context7-mcp
 
 # Install Figma MCP Dev Servers
-echo "Setting up Figma MCP..."
-claude mcp add -s user --transport sse figma-dev-mode-mcp-server http://127.0.0.1:3845/sse
+install_mcp_server "figma-dev-mode-mcp-server" "Figma MCP" \
+    claude mcp add -s user --transport sse figma-dev-mode-mcp-server http://127.0.0.1:3845/sse
 
 # Verify installation
-echo "Verifying installation..."
+info "Verifying installation..."
 claude mcp list
 
-echo "Basic MCP servers installed successfully!"
-echo "For API key-based servers (Brave Search, Firecrawl) and Browser Tools, see the README for individual setup instructions."
+success "Basic MCP servers installed successfully!"
+notice "For API key-based servers (Brave Search, Firecrawl) and Browser Tools, see the README for individual setup instructions."
+
+# Clean exit to avoid trap errors
+_safeExit_ 0

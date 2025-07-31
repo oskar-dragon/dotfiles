@@ -20,7 +20,7 @@ if [ -n "${BASH_VERSION:-}" ]; then
     fi
 fi
 
-trap '_trapCleanup_ ${LINENO} ${BASH_LINENO} "${BASH_COMMAND}" "${FUNCNAME[*]}" "${0}" "${BASH_SOURCE[0]}"' EXIT INT TERM SIGINT SIGQUIT SIGTERM
+trap '_trapCleanup_ ${LINENO} ${BASH_LINENO} "${BASH_COMMAND}" "${FUNCNAME[*]:-}" "${0}" "${BASH_SOURCE[0]}"' EXIT INT TERM SIGINT SIGQUIT SIGTERM
 set -o errtrace # Trap errors in subshells and functions
 set -o errexit  # Exit on error. Append '||true' if you expect an error
 set -o pipefail # Use last non-zero exit code in a pipeline
@@ -317,7 +317,7 @@ _trapCleanup_() {
     #         $5:  Scriptname
     #         $6:  $BASH_SOURCE
     # USAGE:
-    #         trap '_trapCleanup_ ${LINENO} ${BASH_LINENO} "${BASH_COMMAND}" "${FUNCNAME[*]}" "${0}" "${BASH_SOURCE[0]}"' EXIT INT TERM SIGINT SIGQUIT SIGTERM ERR
+    #         trap '_trapCleanup_ ${LINENO} ${BASH_LINENO} "${BASH_COMMAND}" "${FUNCNAME[*]:-}" "${0}" "${BASH_SOURCE[0]}"' EXIT INT TERM SIGINT SIGQUIT SIGTERM ERR
     # OUTS:
     #         Exits script with error code 1
 
